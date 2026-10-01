@@ -368,7 +368,7 @@ function renderMeditation(id, section) {
       <h2>Guided videos</h2>
       <div class="vids">
         ${(media.videos || []).map(([title, vid, channel, length, views], i) => `
-          <a class="vid" href="https://www.youtube.com/watch?v=${vid}" target="_blank" rel="noopener">
+          <a class="vid" href="https://www.youtube.com/watch?v=${vid}" target="_blank" rel="noopener noreferrer">
             <em>${two(i + 1)}</em>
             <strong>${esc(title)}<small>${esc(channel)} · ${esc(length)} · ${esc(views)} views</small></strong>
             <span class="play"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M8 5.5v13l10-6.5z" fill="currentColor"/></svg></span>
@@ -524,8 +524,8 @@ function openLightbox(plate) {
   box.setAttribute("aria-label", img.alt);
   box.innerHTML = `
     <button class="lb-close" aria-label="Close">×</button>
-    <img src="${img.src}" alt="${esc(img.alt)}" />
-    <p>${plate.querySelector("figcaption").innerHTML} <a href="${plate.querySelector("a").href}" target="_blank" rel="noopener">View source ↗</a></p>`;
+    <img src="${esc(img.src)}" alt="${esc(img.alt)}" />
+    <p>${esc(plate.querySelector("figcaption").firstChild.textContent)}<small>${esc(plate.querySelector("figcaption small").textContent)}</small> <a href="${esc(plate.querySelector("a").href)}" target="_blank" rel="noopener noreferrer">View source ↗</a></p>`;
   const close = () => {
     box.classList.add("out");
     setTimeout(() => box.remove(), 300);
