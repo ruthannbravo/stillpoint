@@ -677,10 +677,35 @@ const CONCERNS = [
   },
 ];
 
+// Matched against the start of a word, after lower-casing and stripping
+// punctuation (apostrophes kept, so both "don't" and "dont" are listed).
+// Set to fire easily on purpose: a false alarm only shows a phone number
+// above the meditations; a miss shows nothing at all.
 const CRISIS_TERMS = [
-  "suicid", "kill myself", "end my life", "end it all", "self harm", "self-harm",
-  "hurt myself", "cutting myself", "want to die", "don't want to live", "dont want to live",
-  "no reason to live", "better off dead",
+  // ending your life, said directly
+  "suicid", "kill myself", "killing myself", "kms", "unalive", "end my life", "end it all",
+  "end things", "take my own life", "take my life", "want to die", "wanna die", "wish i was dead",
+  "wish i were dead", "better off dead", "better off without me",
+  // the indirect ways people actually say it
+  "don't want to be here", "dont want to be here", "do not want to be here",
+  "don't want to exist", "dont want to exist", "don't want to live", "dont want to live",
+  "don't want to wake up", "dont want to wake up", "never wake up", "wish i wasn't here",
+  "wish i wasnt here", "wish i could disappear", "no reason to live", "nothing to live for",
+  "no point living", "no point in living", "not worth living", "isn't worth living",
+  "can't go on", "cant go on", "can't do this anymore", "cant do this anymore", "give up on life",
+  "goodbye forever",
+  // hurting yourself
+  "self harm", "self-harm", "selfharm", "hurt myself", "hurting myself", "harm myself",
+  "harming myself", "cut myself", "cutting myself", "burn myself", "overdose", "took all my pills",
+  "take all my pills",
+];
+
+// Heavy, but not a crisis on its own. These get a gentler note that keeps
+// the door open, rather than nothing.
+const SUPPORT_TERMS = [
+  "hate myself", "hate my life", "hate who i am", "worthless", "i'm a burden", "im a burden",
+  "i am a burden", "hopeless", "no one would care", "nobody would care", "no one cares",
+  "nobody cares", "so alone", "completely alone", "empty inside", "numb",
 ];
 
 const PROMPTS = [

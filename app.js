@@ -21,6 +21,7 @@ function analyze(text) {
   const has = (term) => t.includes(" " + term);
 
   const crisis = CRISIS_TERMS.some(has);
+  const support = !crisis && SUPPORT_TERMS.some(has);
   const matched = [];
   const chakraScore = {};
   const medScore = {};
@@ -59,6 +60,7 @@ function analyze(text) {
 
   return {
     crisis,
+    support,
     concerns: matched.sort((a, b) => b.hits - a.hits).map((m) => m.label),
     chakras,
     meditations,
@@ -221,6 +223,12 @@ function renderResults(scroll) {
         It sounds like you're carrying something very heavy. If you're thinking about ending your life or hurting yourself,
         please call or text <a href="tel:988">988</a> (Canada &amp; US) or your local emergency number. You deserve real support right now.
         The practices below can help you through the next few minutes, alongside that support.
+      </div>`
+    : r.support
+    ? `<div class="care glass">
+        <strong>That sounds really heavy.</strong>
+        The practices below can help you through the next few minutes. And if it ever starts to feel like too much,
+        you can call or text <a href="tel:988">988</a> (Canada &amp; US) any time, to talk to someone.
       </div>`
     : "";
 

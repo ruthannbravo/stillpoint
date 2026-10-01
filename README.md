@@ -33,7 +33,7 @@ Every visual choice (fonts, backgrounds, spacing, animation, wording) came from 
 | **Chakras** | The 3D body beside a stepper for each of the seven chakras: what it is, signs of a block, signs of balance, how to unblock it, and meditations that help. |
 | **Guide** | Pick Beginner, Intermediate or Advanced and get a gentle four-week plan that links straight to each practice. |
 
-Small touches: hills / water / sunrise backgrounds, a slow word-by-word landing animation, a full-screen menu on phones, and a safety message pointing to crisis support if someone describes self-harm.
+Small touches: hills / water / sunrise backgrounds, a slow word-by-word landing animation, a full-screen menu on phones, and a support note above the results. If what you type sounds like thoughts of suicide or self-harm, said directly ("I want to die") or indirectly ("I don't want to be here anymore"), it shows the 988 crisis line. Heavy but less acute words ("I hate myself", "hopeless") get a gentler note with the same number. It is a word list, not a screening tool: it's set to show the note too often rather than miss someone, and it can still miss phrasing it hasn't seen. The meditations are always shown too.
 
 ---
 
