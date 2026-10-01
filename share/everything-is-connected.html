@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Everything is connected</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300..500&display=swap" rel="stylesheet" />
+<style>
+  /* 1080×1350 share card. Photo: Unsplash license (photo-1679267207806). */
+  html, body { margin: 0; }
+  .card {
+    position: relative;
+    width: 1080px;
+    height: 1350px;
+    overflow: hidden;
+    color: #fff;
+    font-family: "DM Sans", sans-serif;
+    background: #5d6b55 url("https://images.unsplash.com/photo-1679267207806-53137718141b?w=1600&q=85&auto=format&fit=crop&crop=entropy") center 62% / cover;
+  }
+  /* soft, desaturated, misty grade so the white line work reads */
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(196, 204, 198, 0.55) 0%, rgba(150, 162, 152, 0.18) 34%, rgba(40, 52, 36, 0.05) 60%, rgba(22, 30, 20, 0.45) 100%);
+    backdrop-filter: saturate(0.8) contrast(0.92);
+  }
+  .card > * { position: absolute; left: 0; right: 0; text-align: center; }
+  h1 {
+    top: 118px;
+    margin: 0;
+    font-family: "Instrument Serif", serif;
+    font-weight: 400;
+    font-size: 62px;
+    letter-spacing: -0.005em;
+    text-shadow: 0 2px 24px rgba(0, 0, 0, 0.18);
+  }
+  h1 em { font-style: italic; }
+  .ring {
+    left: 50%;
+    width: 352px;
+    height: 352px;
+    margin-left: -176px;
+    border: 1.6px solid rgba(255, 255, 255, 0.92);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-size: 19px;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    line-height: 1.45;
+    text-transform: uppercase;
+    text-shadow: 0 1px 14px rgba(0, 0, 0, 0.28);
+  }
+  .r1 { top: 262px; }
+  .r2 { top: 532px; }
+  .r3 { top: 802px; }
+  .tag {
+    top: 1206px;
+    font-family: "Instrument Serif", serif;
+    font-size: 34px;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.3);
+  }
+  .mark {
+    top: 1268px;
+    font-family: "Instrument Serif", serif;
+    font-style: italic;
+    font-size: 30px;
+    letter-spacing: 0.02em;
+    opacity: 0.92;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>everything is <em>connected</em></h1>
+    <div class="ring r1">The breath calms<br />the body</div>
+    <div class="ring r2">The body quiets<br />the mind</div>
+    <div class="ring r3">And awareness sits<br />at the centre of it all</div>
+    <p class="tag">This is where stillness begins.</p>
+    <p class="mark">Stillpoint</p>
+  </div>
+</body>
+</html>

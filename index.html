@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stillpoint</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <meta name="theme-color" content="#3f5e45" />
+  <meta name="description" content="Describe what you're going through and find a meditation and chakra practice to help." />
+  <link rel="stylesheet" href="assets/fonts/fonts.css" />
+  <link rel="stylesheet" href="styles.css?v=6" />
+</head>
+<body data-theme="home">
+  <div class="bg" aria-hidden="true">
+    <div class="photo hills"></div>
+    <div class="photo water"></div>
+    <div class="photo sunrise"></div>
+    <i class="b1"></i><i class="b2"></i><i class="b3"></i>
+    <div class="grain"></div>
+  </div>
+
+  <header class="nav">
+    <div class="nav-left">
+      <a href="#/" class="wordmark">Stillpoint</a>
+      <div class="scene-switch glass" role="radiogroup" aria-label="Background">
+        <button role="radio" data-scene="hills" aria-checked="true" aria-label="Green hills" title="Green hills">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 18c3-5 6-7 9-4 2-3 5-5 11 4"/><path d="M2 21h20"/></svg>
+        </button>
+        <button role="radio" data-scene="water" aria-checked="false" aria-label="Calm water" title="Calm water">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 9c2.5-2 4.5-2 7 0s4.5 2 7 0 4.5-2 6 0"/><path d="M2 15c2.5-2 4.5-2 7 0s4.5 2 7 0 4.5-2 6 0"/></svg>
+        </button>
+        <button role="radio" data-scene="sunrise" aria-checked="false" aria-label="Sunrise" title="Sunrise">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M6 17a6 6 0 0 1 12 0"/><path d="M2 21h20M12 4v3M4.6 9.6l2.1 2.1M19.4 9.6l-2.1 2.1"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav class="glass">
+      <a href="#/" data-nav="home">Find</a>
+      <a href="#/meditations" data-nav="meditations">Meditations</a>
+      <a href="#/chakras" data-nav="chakras">Chakras</a>
+      <a href="#/guide" data-nav="guide">Guide</a>
+    </nav>
+    <button class="menu-btn glass" aria-expanded="false" aria-controls="menu-sheet">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M4 9h16M8 15h12"/></svg>
+      Menu
+    </button>
+  </header>
+
+  <div class="menu-sheet" id="menu-sheet" hidden>
+    <button class="menu-close" aria-label="Close menu">×</button>
+    <nav class="menu-links" aria-label="Main">
+      <a href="#/" data-nav="home"><em>01</em>Find</a>
+      <a href="#/meditations" data-nav="meditations"><em>02</em>Meditations</a>
+      <a href="#/chakras" data-nav="chakras"><em>03</em>Chakras</a>
+      <a href="#/guide" data-nav="guide"><em>04</em>Guide</a>
+    </nav>
+    <div class="menu-scenes" role="radiogroup" aria-label="Background">
+      <span>Background</span>
+      <button role="radio" data-scene="hills" aria-checked="true">Hills</button>
+      <button role="radio" data-scene="water" aria-checked="false">Water</button>
+      <button role="radio" data-scene="sunrise" aria-checked="false">Sunrise</button>
+    </div>
+  </div>
+
+  <main id="view"></main>
+
+  <footer class="foot">
+    Chakras are a traditional framework from yogic and tantric practice, not a medical diagnosis.
+    Meditation supports wellbeing but isn't a substitute for professional care.
+  </footer>
+
+  <script src="assets/vendor/three.min.js"></script>
+  <script src="data.js?v=2"></script>
+  <script src="body3d.js?v=2"></script>
+  <script src="app.js?v=4"></script>
+</body>
+</html>
