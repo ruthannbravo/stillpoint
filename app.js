@@ -616,6 +616,11 @@ function renderChakras(id) {
     onPick: (next) => (location.hash = `#/chakras/${next}`),
   });
   readout(c, c.theme.split(",")[0].toLowerCase());
+  // a simple picker beside the body, for anyone who doesn't think to tap the lights
+  document.getElementById("stage").insertAdjacentHTML("beforeend", `
+    <nav class="chakra-dots" aria-label="Choose a chakra">
+      ${CHAKRAS.map((k) => `<a href="#/chakras/${k.id}" class="${k.id === c.id ? "on" : ""}" style="--k:${k.color}" aria-label="${k.name} chakra"${k.id === c.id ? ' aria-current="page"' : ""}><span>${k.name}</span><i></i></a>`).join("")}
+    </nav>`);
   // keep the reader on the same section while hopping between chakras
   stepper(view.querySelector(".chakra-read"), slides, CHAKRA_STEPS, { start: chakraStep, onChange: (s) => (chakraStep = s) });
   view.querySelector(".chakra-read").addEventListener("click", (e) => {

@@ -1329,3 +1329,50 @@ main:has(.guide-pick) { max-width: none; }
 .guide .med-head .eyebrow { margin-bottom: 6px; }
 .med .timeline { margin: clamp(28px, 4vh, 44px) 0 clamp(24px, 4vh, 40px); }
 .med .ed h2 { font-size: clamp(34px, 4vw, 60px); margin-bottom: clamp(18px, 3vh, 32px); }
+
+/* Chakra picker on the right edge of the body */
+.chakra-dots {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+.chakra-dots a { position: relative; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; text-decoration: none; }
+.chakra-dots i {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #fff 0 15%, color-mix(in oklab, var(--k) 55%, #fff) 60%);
+  box-shadow: 0 0 8px 1px color-mix(in oklab, var(--k) 60%, transparent);
+  transition: transform 0.35s cubic-bezier(.3, 1.6, .5, 1);
+}
+.chakra-dots a:hover i { transform: scale(1.35); }
+.chakra-dots a.on i { transform: scale(1.5); box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.85), 0 0 14px 3px color-mix(in oklab, var(--k) 70%, transparent); }
+.chakra-dots span {
+  position: absolute;
+  right: calc(100% + 10px);
+  white-space: nowrap;
+  font-size: 12px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(20, 30, 24, 0.55);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: #fff;
+  opacity: 0;
+  transform: translateX(6px);
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.3s var(--ease);
+}
+.chakra-dots a:hover span, .chakra-dots a:focus-visible span { opacity: 1; transform: none; }
+.chakra-dots a:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
