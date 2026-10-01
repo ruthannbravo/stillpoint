@@ -399,8 +399,22 @@ const Body3D = (() => {
     tYaw += dy;
     tPitch = Math.max(-0.6, Math.min(0.6, tPitch + dp));
   }
+  // Ease the camera toward a chakra (or back to the whole body).
+  const CENTER_Y = -0.15;
+  let camY = CENTER_Y, tCamY = CENTER_Y;
+  function focus(id) {
+    if (id && CHAKRA_Y[id] !== undefined) {
+      tCamY = CHAKRA_Y[id];
+      tZoom = 1.9;
+    } else {
+      tCamY = CENTER_Y;
+      tZoom = 1;
+    }
+  }
+
   function reset() {
     touched = true;
+    tCamY = CENTER_Y;
     tYaw = Math.round(tYaw / (Math.PI * 2)) * Math.PI * 2;
     tPitch = 0;
     vYaw = vPitch = 0;
@@ -424,6 +438,9 @@ const Body3D = (() => {
     pivot.rotation.set(pitch, yaw, 0);
     zoom += (tZoom - zoom) * 0.12;
     camera.position.z = baseZ / zoom;
+    camY += (tCamY - camY) * 0.08;
+    camera.position.y = camY;
+    camera.lookAt(0, camY, 0);
     pivot.position.y = -0.15 + (reducedMotion ? 0 : Math.sin(t * 0.8) * 0.008);
 
     const any = state.highlight.length > 0;
@@ -469,6 +486,7 @@ const Body3D = (() => {
       return;
     }
     el.prepend(renderer.domElement);
+    focus(state.focus);
     loadAnatomy();
     resizeObs?.disconnect();
     resizeObs = new ResizeObserver(size);
@@ -480,5 +498,5 @@ const Body3D = (() => {
     Object.assign(state, opts);
   }
 
-  return { mount, update, nudge, reset, setBodyType, magnify, setSurface, getSurface: () => surface, getBodyType: () => bodyType };
+  return { mount, update, focus, nudge, reset, setBodyType, magnify, setSurface, getSurface: () => surface, getBodyType: () => bodyType };
 })();

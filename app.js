@@ -612,6 +612,7 @@ function renderChakras(id) {
   mountStage({
     highlight: [c.id],
     selected: c.id,
+    focus: c.id,
     onPick: (next) => (location.hash = `#/chakras/${next}`),
   });
   readout(c, c.theme.split(",")[0].toLowerCase());
