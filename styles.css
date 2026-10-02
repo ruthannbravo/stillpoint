@@ -1405,3 +1405,35 @@ body[data-scene="sunrise"] .bg .photo.sunrise { background-image: url("assets/bg
 .foot { padding-bottom: max(40px, calc(env(safe-area-inset-bottom, 0px) + 24px)); }
 .menu-sheet { padding-top: max(88px, calc(env(safe-area-inset-top, 0px) + 72px)); padding-bottom: max(36px, calc(env(safe-area-inset-bottom, 0px) + 20px)); }
 .menu-close { top: max(16px, calc(env(safe-area-inset-top, 0px) + 8px)); }
+
+/* ---------- Phones: photo under the browser bars, and no shifting on scroll ---------- */
+/* The page canvas itself carries the photo, so whatever shows behind the
+   status bar, toolbar or an overscroll bounce is the picture, not a flat colour. */
+html {
+  background:
+    linear-gradient(rgba(60, 92, 66, 0.45), rgba(30, 58, 38, 0.55)),
+    url("assets/bg-hills.jpg") center 60% / cover no-repeat,
+    #4a6650;
+  min-height: 100%;
+}
+html[data-scene="water"] {
+  background:
+    linear-gradient(rgba(60, 94, 118, 0.42), rgba(24, 52, 68, 0.6)),
+    url("assets/bg-water.jpg") center 55% / cover no-repeat,
+    #3f5d70;
+}
+html[data-scene="sunrise"] {
+  background:
+    linear-gradient(rgba(150, 102, 96, 0.3), rgba(48, 34, 52, 0.6)),
+    url("assets/bg-sunrise.jpg") center 40% / cover no-repeat,
+    #6c5262;
+}
+body { background-color: transparent; }
+
+@media (max-width: 760px), (hover: none) {
+  /* size the photo to the tallest screen height so it never resizes as the bar collapses */
+  .bg { top: 0; bottom: auto; left: 0; right: 0; height: 100vh; height: 100lvh; }
+  .bg .photo { inset: 0; animation: none; transform: none; }
+  .bg i { animation: none; }
+}
+.search textarea { max-height: 30vh; }

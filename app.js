@@ -181,6 +181,10 @@ function renderHome() {
     q.style.height = q.scrollHeight + "px";
   };
   q.addEventListener("input", grow);
+  // re-measure if the page was laid out while hidden (e.g. opened in a background tab)
+  q.addEventListener("focus", grow);
+  document.addEventListener("visibilitychange", grow);
+  addEventListener("resize", grow);
   q.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -726,6 +730,7 @@ function route() {
 // Background scene: green hills or calm water, remembered between visits.
 function setScene(scene) {
   document.body.dataset.scene = scene;
+  document.documentElement.dataset.scene = scene;
   document.querySelectorAll("button[data-scene]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.scene === scene)));
   try { localStorage.setItem("stillpoint-scene", scene); } catch {}
 }
