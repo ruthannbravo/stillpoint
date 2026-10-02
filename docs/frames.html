@@ -23,6 +23,18 @@
       radial-gradient(ellipse at 20% 0%, rgba(214, 232, 208, 0.28), transparent 55%),
       linear-gradient(160deg, rgba(70, 104, 76, 0.55), rgba(26, 46, 32, 0.78));
   }
+  .stage.water::before { background-image: url("../assets/bg-water.jpg"); background-position: center 55%; filter: blur(26px) saturate(1.05) brightness(0.85); }
+  .stage.water::after {
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(220, 236, 240, 0.28), transparent 55%),
+      linear-gradient(160deg, rgba(70, 104, 128, 0.5), rgba(18, 36, 50, 0.8));
+  }
+  .deskframe { position: absolute; border-radius: 16px; overflow: hidden; box-shadow: 0 40px 90px -30px rgba(3, 10, 18, 0.75), 0 0 0 1px rgba(255, 255, 255, 0.2); }
+  .deskframe iframe { width: 1440px; height: 900px; border: 0; transform-origin: top left; display: block; }
+  .pair .deskframe { left: 120px; top: 120px; width: 1250px; height: 781px; }
+  .pair .deskframe iframe { transform: scale(0.868); }
+  .pair .phone { left: 1440px; top: 150px; transform: scale(0.92); }
+  .pair .cap { position: absolute; left: 122px; top: 940px; }
   .grain {
     position: absolute; inset: 0; z-index: 1; opacity: 0.18; mix-blend-mode: soft-light; pointer-events: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
@@ -78,15 +90,29 @@
 <body>
 <div class="stage"><div class="grain"></div><div class="content" id="c"></div></div>
 <script>
-  const v = new URLSearchParams(location.search).get("v") || "hero";
+  const params = new URLSearchParams(location.search);
+  const v = params.get("v") || "hero";
+  const bg = params.get("bg");
+  // show the site's water scene inside every frame
+  if (bg) { try { localStorage.setItem("stillpoint-scene", bg); localStorage.setItem("stillpoint-controls", "0"); } catch {} }
   const app = "../index.html";
   const phone = (hash, style = "") => `<div class="phone" style="${style}"><div class="screen"><iframe src="${app}${hash}" scrolling="no"></iframe></div></div>`;
-  const sizes = { hero: [1880, 1000], pages: [1880, 1240], body: [1880, 1180], phones: [1880, 1080] };
+  const sizes = { pair: [1920, 1080], hero: [1880, 1000], pages: [1880, 1240], body: [1880, 1180], phones: [1880, 1080] };
   const [w, h] = sizes[v];
   document.body.style.setProperty("--w", w + "px");
   document.body.style.setProperty("--h", h + "px");
   const c = document.getElementById("c");
   document.querySelector(".stage").classList.add(v);
+  if (bg) document.querySelector(".stage").classList.add(bg);
+  // finish every fade-in instantly inside the frames so captures are never mid-animation
+  const settle = (f) => { try { const st = f.contentDocument.createElement("style"); st.textContent = "*,*::before,*::after{animation-delay:0s!important;animation-duration:.001s!important;transition:none!important}"; f.contentDocument.head.append(st); } catch {} };
+  new MutationObserver(() => document.querySelectorAll("iframe").forEach((f) => { if (!f.dataset.s) { f.dataset.s = 1; f.addEventListener("load", () => settle(f)); } })).observe(document.body, { childList: true, subtree: true });
+  const desk = (hash) => `<div class="deskframe"><iframe src="${app}${hash}" scrolling="no"></iframe></div>`;
+
+  if (v === "pair") c.innerHTML = `
+    ${desk(params.get("d"))}
+    ${phone(params.get("p"))}
+    <div class="label cap"><b>${params.get("t") || ""}</b></div>`;
 
   if (v === "hero") c.innerHTML = `
     <div class="text">
@@ -113,6 +139,7 @@
       <div><b>Yours to turn</b>Drag, pinch, scroll or tap. On phones, vertical swipes still scroll the page.</div>
     </div>`;
 
+  if (v === "phones" && bg) document.body.style.setProperty("--h", "1080px"), document.body.style.setProperty("--w", "1920px");
   if (v === "phones") c.innerHTML = `
     <div class="row">
       ${[["#/", "Find"], ["#/chakras/heart", "Chakras"], ["#/guide/beginner", "Guide"]]
