@@ -1437,3 +1437,19 @@ body { background-color: transparent; }
   .bg i { animation: none; }
 }
 .search textarea { max-height: 30vh; }
+
+/* ---------- Phones: no colour strips above/below the photo ----------
+   Newer iPhone Safari paints a flat colour band over any layer pinned to the
+   screen edge. So on phones the photo lives in the page instead: it covers the
+   full first screen (including behind the status bar and toolbar) and scrolls
+   with the page. Below that, a deep tone that matches the photo's bottom. */
+@media (max-width: 760px), (hover: none) {
+  html { background: #2f4634; }
+  html[data-scene="water"] { background: #2a4250; }
+  html[data-scene="sunrise"] { background: #3e2f3e; }
+  body { position: relative; min-height: 100vh; min-height: 100lvh; }
+  .bg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; height: auto; min-height: 100lvh; }
+  /* fill the whole page, but stop growing past ~1.6 screens so long pages don't over-zoom the photo */
+  .bg .photo { inset: 0 0 auto 0; height: min(100%, 160lvh); min-height: 100lvh; }
+  .bg i { display: none; }
+}
