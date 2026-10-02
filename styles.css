@@ -1393,3 +1393,15 @@ main:has(.guide-pick) { max-width: none; }
 .bg .photo.water, .bg .photo.sunrise { background-image: none; }
 body[data-scene="water"] .bg .photo.water { background-image: url("assets/bg-water.jpg"); }
 body[data-scene="sunrise"] .bg .photo.sunrise { background-image: url("assets/bg-sunrise.jpg"); }
+
+/* Phones: let the photo run behind the status bar and the browser's toolbar */
+.bg {
+  top: calc(-1 * env(safe-area-inset-top, 0px) - 2px);
+  bottom: calc(-1 * env(safe-area-inset-bottom, 0px) - 120px);
+  left: calc(-1 * env(safe-area-inset-left, 0px));
+  right: calc(-1 * env(safe-area-inset-right, 0px));
+}
+@media (max-width: 760px) { .nav { padding-top: max(18px, env(safe-area-inset-top, 0px)); } }
+.foot { padding-bottom: max(40px, calc(env(safe-area-inset-bottom, 0px) + 24px)); }
+.menu-sheet { padding-top: max(88px, calc(env(safe-area-inset-top, 0px) + 72px)); padding-bottom: max(36px, calc(env(safe-area-inset-bottom, 0px) + 20px)); }
+.menu-close { top: max(16px, calc(env(safe-area-inset-top, 0px) + 8px)); }
