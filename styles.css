@@ -1376,3 +1376,20 @@ main:has(.guide-pick) { max-width: none; }
 }
 .chakra-dots a:hover span, .chakra-dots a:focus-visible span { opacity: 1; transform: none; }
 .chakra-dots a:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
+
+/* ---------- Faster landing: search is ready in under a second ---------- */
+.hero.intro h1 .w { animation-duration: 1s; animation-delay: calc(0.05s + var(--i) * 0.1s); }
+.hero.intro .lede { animation: arriveSoft 0.8s var(--ease) 0.45s forwards; }
+.hero.intro .search { animation: arriveSoft 0.7s var(--ease) 0.25s forwards; }
+.hero.intro .prompts .bubble:nth-child(1) { animation-delay: 0.6s; }
+.hero.intro .prompts .bubble:nth-child(2) { animation-delay: 0.68s; }
+.hero.intro .prompts .bubble:nth-child(3) { animation-delay: 0.76s; }
+.hero.intro .prompts .bubble:nth-child(4) { animation-delay: 0.84s; }
+.hero.intro .prompts .bubble:nth-child(5) { animation-delay: 0.92s; }
+.hero.intro .prompts .bubble { animation-duration: 0.7s; }
+.nav { animation-duration: 0.8s; animation-delay: 0s; }
+.bg { animation-duration: 0.9s; }
+/* only download the background that's actually showing */
+.bg .photo.water, .bg .photo.sunrise { background-image: none; }
+body[data-scene="water"] .bg .photo.water { background-image: url("assets/bg-water.jpg"); }
+body[data-scene="sunrise"] .bg .photo.sunrise { background-image: url("assets/bg-sunrise.jpg"); }
