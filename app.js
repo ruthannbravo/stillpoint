@@ -176,7 +176,10 @@ function renderHome() {
     <section id="results"></section>`;
 
   const q = document.getElementById("q");
+  // Grow with what's typed; when empty it stays one line, so the placeholder sits centred.
   const grow = () => {
+    q.style.height = "";
+    if (!q.value) return;
     q.style.height = "auto";
     q.style.height = q.scrollHeight + "px";
   };
@@ -731,6 +734,11 @@ function route() {
 function setScene(scene) {
   document.body.dataset.scene = scene;
   document.documentElement.dataset.scene = scene;
+  // phones colour their status bar from this; match the top of the photo so it blends in
+  const sky = { hills: "#6c7b6c", water: "#6b889f", sunrise: "#b18e87" }[scene];
+  let meta = document.querySelector('meta[name="theme-color"]');
+  if (!meta) { meta = document.createElement("meta"); meta.name = "theme-color"; document.head.append(meta); }
+  meta.content = sky;
   document.querySelectorAll("button[data-scene]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.scene === scene)));
   try { localStorage.setItem("stillpoint-scene", scene); } catch {}
 }

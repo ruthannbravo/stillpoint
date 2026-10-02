@@ -1453,3 +1453,13 @@ body { background-color: transparent; }
   .bg .photo { inset: 0 0 auto 0; height: min(100%, 160lvh); min-height: 100lvh; }
   .bg i { display: none; }
 }
+
+/* Phones: the browser paints its top bar a single colour taken from the page,
+   so use the colour of each photo's sky there, fading to its darker ground below. */
+@media (max-width: 760px), (hover: none) {
+  html { background: #6c7b6c linear-gradient(#6c7b6c, #2f4634 70%); }
+  html[data-scene="water"] { background: #6b889f linear-gradient(#6b889f, #2a4250 70%); }
+  html[data-scene="sunrise"] { background: #b18e87 linear-gradient(#b18e87, #3e2f3e 70%); }
+}
+/* search: keep a single line vertically centred */
+.search { align-items: center; }
