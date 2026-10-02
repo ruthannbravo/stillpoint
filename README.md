@@ -1,3 +1,7 @@
+<p align="center">
+  <a href="https://stillpoint.annbravo.com"><img src="docs/hero.jpg" alt="Stillpoint: the chakras page with the 3D glass body on desktop, and the search page on a phone" width="100%" /></a>
+</p>
+
 # Stillpoint
 
 **A calm, interactive guide to meditation and the chakras.**
@@ -26,6 +30,8 @@ Every visual choice (fonts, backgrounds, spacing, animation, wording) came from 
 
 ## What's inside
 
+<p align="center"><img src="docs/pages.jpg" alt="The four pages: Find, Meditations, a single practice, and the Guide" width="100%" /></p>
+
 | Page | What it does |
 |---|---|
 | **Find** | A search box: *"What are you carrying today?"* Type a feeling ("I can't stop overthinking", "I hate myself", "candle gazing") and it matches you to meditations, then lights up the chakras that may be involved on the 3D body. |
@@ -40,6 +46,8 @@ Small touches: hills / water / sunrise backgrounds, a slow word-by-word landing 
 ## How the interactive body works
 
 The chakra figure is the centrepiece, so here's how it's built (see [`body3d.js`](body3d.js)).
+
+<p align="center"><img src="docs/body.jpg" alt="The 3D glass body on desktop and phone, with notes on the glass shader, the breathing chakra lights and the controls" width="100%" /></p>
 
 ### 1. The model
 The body comes from **MakeHuman**, an open-source human-modelling tool whose base meshes are released under CC0 (free for any use). A small Python script ([`scripts/build_anatomy.py`](scripts/build_anatomy.py)) blends MakeHuman's female and male shape targets, smooths the mesh once, and exports it as plain JSON ([`assets/anatomy.json`](assets/anatomy.json)): vertex positions, triangles, and the original quad edges used for the optional contour lines.
@@ -71,6 +79,10 @@ Each chakra is a stack of glowing **sprites** (a soft aura, a coloured glow, a b
 One WebGL renderer is shared across the whole site, and its canvas simply moves between pages, so the body never reloads.
 
 ---
+
+## Made for phones too
+
+<p align="center"><img src="docs/phones.jpg" alt="Find, Chakras and Guide on a phone" width="100%" /></p>
 
 ## How the rest was built
 
