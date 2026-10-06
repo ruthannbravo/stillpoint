@@ -652,6 +652,12 @@ main:has(.med) { max-width: none; padding-left: clamp(20px, 5vw, 56px); padding-
 .vid:hover strong { font-style: italic; }
 .vid:hover .play { transform: scale(1.25); background: #fff; color: #2f3a55; }
 .ed .note { font-size: 13px; color: var(--faint); margin-top: 20px; }
+.along-tabs { display: flex; gap: 10px; flex-wrap: wrap; margin: 0 0 28px; }
+.along-tabs button { font: inherit; font-size: 14px; letter-spacing: 0.04em; color: var(--soft); background: none; border: 1px dotted rgba(255, 255, 255, 0.6); border-radius: 999px; padding: 9px 20px; cursor: pointer; transition: background 0.3s, color 0.3s, border-color 0.3s; }
+.along-tabs button:hover { color: var(--ink); border-style: solid; }
+.along-tabs button[aria-selected="true"] { background: #fff; color: #2f3a55; border: 1px solid #fff; }
+.along[hidden] { display: none; }
+.along:not([hidden]) { animation: rise 0.5s var(--ease) both; }
 
 /* pager */
 .pager { display: flex; justify-content: space-between; align-items: center; margin-top: clamp(48px, 7vw, 96px); padding-top: 24px; border-top: 1px solid var(--hair); }

@@ -330,7 +330,34 @@ function renderLibrary() {
   );
 }
 
-const STEPS = ["History", "Used for", "Practice", "Videos"];
+const STEPS = ["History", "Used for", "Practice", "Practice along"];
+
+// "Practice along": YouTube videos plus the same kind of session on Spotify and Apple Music
+const PLAY = `<span class="play"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M8 5.5v13l10-6.5z" fill="currentColor"/></svg></span>`;
+const ALONG = [
+  ["videos", "Video", "YouTube", (id) => `https://www.youtube.com/watch?v=${id}`],
+  ["spotify", "Spotify", "Spotify", (id) => `https://open.spotify.com/track/${id}`],
+  ["apple", "Apple Music", "Apple Music", (id) => `https://music.apple.com/us/song/${id}`],
+];
+function alongHTML(media) {
+  const tabs = ALONG.filter(([key]) => (media[key] || []).length);
+  if (!tabs.length) return "";
+  return `
+    <div class="along-tabs" role="tablist">${tabs.map(([key, label], i) => `
+      <button role="tab" data-along="${key}" aria-selected="${i ? "false" : "true"}">${label}</button>`).join("")}
+    </div>
+    ${tabs.map(([key, , where, url], i) => `
+      <div class="along" data-along-panel="${key}" ${i ? "hidden" : ""}>
+        <div class="vids">${media[key].map(([title, id, by, length, views], n) => `
+          <a class="vid" href="${esc(url(id))}" target="_blank" rel="noopener noreferrer">
+            <em>${two(n + 1)}</em>
+            <strong>${esc(title)}<small>${esc(by)} · ${esc(length)}${views ? ` · ${esc(views)} views` : ""}</small></strong>
+            ${PLAY}
+          </a>`).join("")}
+        </div>
+        <p class="note">Opens in ${where}${key === "videos" ? "" : ". Full sessions need a subscription or free account"}.</p>
+      </div>`).join("")}`;
+}
 
 function renderMeditation(id, section) {
   const m = meditationById[id];
@@ -379,17 +406,9 @@ function renderMeditation(id, section) {
       <ol class="how">${m.steps.map((s, i) => `<li><em>${two(i + 1)}</em><span>${esc(s)}</span></li>`).join("")}</ol>
     </div>`,
     `<div class="ed">
-      <span class="eyebrow">Practice along</span>
-      <h2>Guided videos</h2>
-      <div class="vids">
-        ${(media.videos || []).map(([title, vid, channel, length, views], i) => `
-          <a class="vid" href="https://www.youtube.com/watch?v=${vid}" target="_blank" rel="noopener noreferrer">
-            <em>${two(i + 1)}</em>
-            <strong>${esc(title)}<small>${esc(channel)} · ${esc(length)} · ${esc(views)} views</small></strong>
-            <span class="play"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M8 5.5v13l10-6.5z" fill="currentColor"/></svg></span>
-          </a>`).join("")}
-      </div>
-      <p class="note">Opens on YouTube.</p>
+      <span class="eyebrow">Watch or listen</span>
+      <h2>Practice along</h2>
+      ${alongHTML(media)}
     </div>`,
   ];
 
@@ -408,6 +427,13 @@ function renderMeditation(id, section) {
   // "#/meditations/<id>/practice" opens straight on How to practice
   const start = Math.max(0, STEPS.findIndex((s) => s.toLowerCase().startsWith(section || "history")));
   stepper(view.querySelector(".med"), slides, STEPS, { start });
+  view.querySelector(".med").addEventListener("click", (e) => {
+    const tab = e.target.closest("[data-along]");
+    if (!tab) return;
+    const box = tab.closest(".ed");
+    box.querySelectorAll("[data-along]").forEach((b) => b.setAttribute("aria-selected", b === tab));
+    box.querySelectorAll("[data-along-panel]").forEach((p) => (p.hidden = p.dataset.alongPanel !== tab.dataset.along));
+  });
 }
 
 // ---------- Stepper: edge-to-edge timeline + sliding sections ----------
