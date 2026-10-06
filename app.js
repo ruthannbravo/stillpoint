@@ -330,7 +330,7 @@ function renderLibrary() {
   );
 }
 
-const STEPS = ["History", "Used for", "Practice", "Practice along"];
+const STEPS = ["Practice", "Practice along", "History"];
 
 // "Practice along": YouTube videos plus the same kind of session on Spotify and Apple Music
 const PLAY = `<span class="play"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M8 5.5v13l10-6.5z" fill="currentColor"/></svg></span>`;
@@ -379,25 +379,10 @@ function renderMeditation(id, section) {
 
   const slides = [
     `<div class="ed">
-      <span class="eyebrow">${esc(m.origin)} · ${esc(m.era)}</span>
-      <h2>Where it comes from</h2>
-      <div class="flow">
-        ${archive}
-        ${m.history.map((p, i) => `<p class="${i ? "" : "lead"}">${esc(p)}</p>`).join("")}
-      </div>
-      ${past.milestones.length ? `
-        <h3 class="dates-title">Key dates <small>Hover to look closer · scroll sideways for more</small></h3>
-        <ol class="dates">${past.milestones.map(([when, what]) => `
-          <li tabindex="0"><span class="when">${esc(when)}</span><span class="what">${esc(what)}</span></li>`).join("")}
-        </ol>` : ""}
-    </div>`,
-    `<div class="ed">
       <span class="eyebrow">People turn to it for</span>
       <h2>What it's used for</h2>
-      <ol class="uses">${m.usedFor.map((u, i) => `<li><em>${two(i + 1)}</em>${esc(u)}</li>`).join("")}</ol>
-    </div>`,
-    `<div class="ed">
-      <span class="eyebrow">A simple way to begin</span>
+      <ol class="uses compact">${m.usedFor.map((u, i) => `<li><em>${two(i + 1)}</em>${esc(u)}</li>`).join("")}</ol>
+      <span class="eyebrow how-eyebrow">A simple way to begin</span>
       <h2>How to practice</h2>
       <dl class="meta">
         <div><dt>Time</dt><dd>${esc(m.duration)}</dd></div>
@@ -409,6 +394,19 @@ function renderMeditation(id, section) {
       <span class="eyebrow">Watch or listen</span>
       <h2>Practice along</h2>
       ${alongHTML(media)}
+    </div>`,
+    `<div class="ed">
+      <span class="eyebrow">${esc(m.origin)} · ${esc(m.era)}</span>
+      <h2>Where it comes from</h2>
+      <div class="flow">
+        ${archive}
+        ${m.history.map((p, i) => `<p class="${i ? "" : "lead"}">${esc(p)}</p>`).join("")}
+      </div>
+      ${past.milestones.length ? `
+        <h3 class="dates-title">Key dates <small>Hover to look closer · scroll sideways for more</small></h3>
+        <ol class="dates">${past.milestones.map(([when, what]) => `
+          <li tabindex="0"><span class="when">${esc(when)}</span><span class="what">${esc(what)}</span></li>`).join("")}
+        </ol>` : ""}
     </div>`,
   ];
 
@@ -424,8 +422,9 @@ function renderMeditation(id, section) {
       ${stepperHTML(STEPS)}
     </article>`;
 
-  // "#/meditations/<id>/practice" opens straight on How to practice
-  const start = Math.max(0, STEPS.findIndex((s) => s.toLowerCase().startsWith(section || "history")));
+  // "#/meditations/<id>/<section>" opens on that section (Practice by default)
+  const want = decodeURIComponent(section || "practice").toLowerCase();
+  const start = Math.max(0, STEPS.findIndex((s) => s.toLowerCase() === want));
   stepper(view.querySelector(".med"), slides, STEPS, { start });
   view.querySelector(".med").addEventListener("click", (e) => {
     const tab = e.target.closest("[data-along]");

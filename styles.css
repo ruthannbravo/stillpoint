@@ -626,6 +626,8 @@ main:has(.med) { max-width: none; padding-left: clamp(20px, 5vw, 56px); padding-
   transition: padding 0.5s var(--ease), opacity 0.4s;
 }
 .uses li:last-child { border-bottom: 1px solid var(--hair); }
+.uses.compact li { font-size: clamp(24px, 2.6vw, 36px); padding: 10px 0; }
+.how-eyebrow { display: block; margin-top: clamp(56px, 7vw, 96px); }
 .uses em { font-family: var(--sans); font-style: normal; font-weight: 200; font-size: 16px; color: var(--faint); min-width: 2ch; }
 .uses:hover li { opacity: 0.4; }
 .uses li:hover { opacity: 1; padding-left: clamp(12px, 3vw, 40px); font-style: italic; }
