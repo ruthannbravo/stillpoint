@@ -3,3 +3,9 @@ scripts
 .DS_Store
 README.md
 docs
+.relay
+.ship-check-passed
+.gstack
+AGENTS.md
+CLAUDE.md
+relay.json
