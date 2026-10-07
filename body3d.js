@@ -481,7 +481,7 @@ const Body3D = (() => {
     state = { highlight: [], selected: null, onPick: null, ...opts };
     host = el;
     if (!ok) {
-      status("Your browser cannot show the 3D body. The chakra list below still works.");
+      status("Your browser cannot show the 3D body. You can still choose a chakra from the list.");
       el.querySelectorAll("button").forEach(button => { button.disabled = true; });
       return;
     }

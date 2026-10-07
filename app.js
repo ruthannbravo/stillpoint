@@ -6,6 +6,47 @@ let lastQuery = "";
 let homeFocus = null;
 let libraryFilter = "all";
 
+// Look up an id from the address bar only among the object's own entries,
+// so names like "constructor" fall through to the normal fallback.
+const own = (obj, key) => (key != null && Object.hasOwn(obj, key) ? obj[key] : undefined);
+
+// Screen readers hear about changes that happen without a page load.
+function announce(text) {
+  const el = document.getElementById("announce");
+  if (!el) return;
+  el.textContent = "";
+  setTimeout(() => (el.textContent = text), 50);
+}
+
+// Overlays (phone menu, image viewer) keep keyboard focus inside and make the page behind them inert.
+const pageBehind = () => [document.querySelector(".nav"), view, document.querySelector(".foot")];
+function setPageInert(on) {
+  pageBehind().forEach((el) => el && (el.inert = on));
+}
+function keepFocusIn(box, e) {
+  if (e.key !== "Tab") return;
+  const items = [...box.querySelectorAll("a[href], button:not([disabled])")].filter((el) => el.tabIndex >= 0 && el.getClientRects().length);
+  if (!items.length) return;
+  const first = items[0], last = items[items.length - 1];
+  if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+  else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+}
+
+// Arrow keys move between the options of a tab list or radio group, like native controls.
+function arrowKeys(group, e, select) {
+  const keys = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1, Home: "first", End: "last" };
+  if (!(e.key in keys)) return;
+  const items = [...group.querySelectorAll('[role="tab"], [role="radio"]')];
+  const i = items.indexOf(document.activeElement);
+  if (i < 0) return;
+  e.preventDefault();
+  e.stopPropagation();
+  const k = keys[e.key];
+  const next = k === "first" ? 0 : k === "last" ? items.length - 1 : (i + k + items.length) % items.length;
+  items[next].focus();
+  select(items[next]);
+}
+
 const esc = (s) =>
   String(s).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch]);
 
@@ -161,6 +202,18 @@ function medCard(m, reason) {
 
 // ---------- Home ----------
 
+// The search box grows with what's typed; when empty it stays one line, so the placeholder sits centred.
+function growSearch(q) {
+  if (!q) return;
+  q.style.height = "";
+  if (!q.value) return;
+  q.style.height = "auto";
+  q.style.height = q.scrollHeight + "px";
+}
+// Registered once (not on every visit to Find), and always measuring the box that's on screen now.
+document.addEventListener("visibilitychange", () => growSearch(document.getElementById("q")));
+addEventListener("resize", () => growSearch(document.getElementById("q")));
+
 function renderHome() {
   setTheme("home");
   view.innerHTML = `
@@ -176,18 +229,10 @@ function renderHome() {
     <section id="results"></section>`;
 
   const q = document.getElementById("q");
-  // Grow with what's typed; when empty it stays one line, so the placeholder sits centred.
-  const grow = () => {
-    q.style.height = "";
-    if (!q.value) return;
-    q.style.height = "auto";
-    q.style.height = q.scrollHeight + "px";
-  };
+  const grow = () => growSearch(q);
   q.addEventListener("input", grow);
   // re-measure if the page was laid out while hidden (e.g. opened in a background tab)
   q.addEventListener("focus", grow);
-  document.addEventListener("visibilitychange", grow);
-  addEventListener("resize", grow);
   q.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
@@ -266,7 +311,7 @@ function renderResults(scroll) {
     const box = document.getElementById("focus");
     if (!id) {
       document.getElementById("readout").innerHTML = "";
-      box.innerHTML = `<div class="focus glass"><p>Tap any light on the body to explore that chakra.</p></div>`;
+      box.innerHTML = `<div class="focus glass"><p>Tap a light on the body, or choose a chakra from the list beside it, to explore it.</p></div>`;
       return;
     }
     const c = chakraById[id];
@@ -282,15 +327,25 @@ function renderResults(scroll) {
       </div>`;
   };
 
-  mountStage({
-    highlight: r.chakras,
-    onPick: (id) => {
-      homeFocus = id;
-      showFocus();
-    },
-  });
+  const pick = (id) => {
+    homeFocus = id;
+    showFocus();
+    document.querySelectorAll("#stage [data-pick]").forEach((b) => {
+      b.classList.toggle("on", b.dataset.pick === id);
+      b.setAttribute("aria-pressed", String(b.dataset.pick === id));
+    });
+  };
+  mountStage({ highlight: r.chakras, onPick: pick });
+  // the same picker as the chakras page, so the body can be explored without a mouse or 3D
+  const current = homeFocus || r.chakras[0];
+  document.getElementById("stage").insertAdjacentHTML("beforeend", `
+    <div class="chakra-dots" role="group" aria-label="Choose a chakra">
+      ${CHAKRAS.map((k) => `<button type="button" data-pick="${k.id}" class="${k.id === current ? "on" : ""}" style="--k:${k.color}" aria-label="${k.name} chakra" aria-pressed="${k.id === current}"><span>${k.name}</span><i></i></button>`).join("")}
+    </div>`);
+  document.querySelectorAll("#stage [data-pick]").forEach((b) => b.addEventListener("click", () => pick(b.dataset.pick)));
   showFocus();
 
+  announce(`${r.meditations.length} meditations suggested${r.concerns.length ? ` for ${r.concerns.slice(0, 3).join(", ")}` : ""}.`);
   el.classList.remove("in");
   void el.offsetWidth;
   el.classList.add("in");
@@ -316,8 +371,8 @@ function renderLibrary() {
     <section class="page-head center">
       <h1>Move towards <em>what brings you…</em></h1>
       <p class="lede">Fourteen practices from traditions around the world. Choose one to learn where it comes from and how to begin.</p>
-      <div class="filters" role="tablist">
-        ${FILTERS.map(([k, label]) => `<button class="bubble ${k === libraryFilter ? "on" : ""}" data-filter="${k}" role="tab" aria-selected="${k === libraryFilter}">${label}</button>`).join("")}
+      <div class="filters" role="group" aria-label="Filter meditations">
+        ${FILTERS.map(([k, label]) => `<button class="bubble ${k === libraryFilter ? "on" : ""}" data-filter="${k}" aria-pressed="${k === libraryFilter}">${label}</button>`).join("")}
       </div>
     </section>
     <section class="grid fade">${list.map((m) => medCard(m)).join("")}</section>`;
@@ -326,6 +381,9 @@ function renderLibrary() {
     b.addEventListener("click", () => {
       libraryFilter = b.dataset.filter;
       renderLibrary();
+      view.querySelector(`[data-filter="${libraryFilter}"]`)?.focus();
+      const label = FILTERS.find(([k]) => k === libraryFilter)[1];
+      announce(`${view.querySelectorAll(".grid .card").length} meditations${libraryFilter === "all" ? "" : `: ${label}`}.`);
     })
   );
 }
@@ -343,11 +401,11 @@ function alongHTML(media) {
   const tabs = ALONG.filter(([key]) => (media[key] || []).length);
   if (!tabs.length) return "";
   return `
-    <div class="along-tabs" role="tablist">${tabs.map(([key, label], i) => `
-      <button role="tab" data-along="${key}" aria-selected="${i ? "false" : "true"}">${label}</button>`).join("")}
+    <div class="along-tabs" role="tablist" aria-label="Practice along">${tabs.map(([key, label], i) => `
+      <button role="tab" id="along-tab-${key}" data-along="${key}" aria-controls="along-panel-${key}" aria-selected="${i ? "false" : "true"}" tabindex="${i ? "-1" : "0"}">${label}</button>`).join("")}
     </div>
     ${tabs.map(([key, , where, url], i) => `
-      <div class="along" data-along-panel="${key}" ${i ? "hidden" : ""}>
+      <div class="along" role="tabpanel" id="along-panel-${key}" aria-labelledby="along-tab-${key}" data-along-panel="${key}" ${i ? "hidden" : ""}>
         <div class="vids">${media[key].map(([title, id, by, length, views], n) => `
           <a class="vid" href="${esc(url(id))}" target="_blank" rel="noopener noreferrer">
             <em>${two(n + 1)}</em>
@@ -360,7 +418,7 @@ function alongHTML(media) {
 }
 
 function renderMeditation(id, section) {
-  const m = meditationById[id];
+  const m = own(meditationById, id);
   if (!m) return renderLibrary();
   const media = MEDIA[m.id] || {};
   setTheme("library");
@@ -423,15 +481,25 @@ function renderMeditation(id, section) {
     </article>`;
 
   // "#/meditations/<id>/<section>" opens on that section (Practice by default)
-  const want = decodeURIComponent(section || "practice").toLowerCase();
+  let want = "practice";
+  try { want = decodeURIComponent(section || "practice").toLowerCase(); } catch {}
   const start = Math.max(0, STEPS.findIndex((s) => s.toLowerCase() === want));
   stepper(view.querySelector(".med"), slides, STEPS, { start });
+  const showAlong = (tab) => {
+    const box = tab.closest(".ed");
+    box.querySelectorAll("[data-along]").forEach((b) => {
+      b.setAttribute("aria-selected", String(b === tab));
+      b.tabIndex = b === tab ? 0 : -1;
+    });
+    box.querySelectorAll("[data-along-panel]").forEach((p) => (p.hidden = p.dataset.alongPanel !== tab.dataset.along));
+  };
   view.querySelector(".med").addEventListener("click", (e) => {
     const tab = e.target.closest("[data-along]");
-    if (!tab) return;
-    const box = tab.closest(".ed");
-    box.querySelectorAll("[data-along]").forEach((b) => b.setAttribute("aria-selected", b === tab));
-    box.querySelectorAll("[data-along-panel]").forEach((p) => (p.hidden = p.dataset.alongPanel !== tab.dataset.along));
+    if (tab) showAlong(tab);
+  });
+  view.querySelector(".med").addEventListener("keydown", (e) => {
+    const list = e.target.closest?.(".along-tabs");
+    if (list) arrowKeys(list, e, showAlong);
   });
 }
 
@@ -511,7 +579,8 @@ function stepper(root, slides, labels, { start = 0, onChange } = {}) {
   const onKey = (e) => {
     if (!document.body.contains(slide)) return removeEventListener("keydown", onKey);
     if (document.querySelector(".lightbox")) return;
-    if (e.target.closest?.("input, textarea, canvas")) return;
+    if (e.target.closest?.('input, textarea, canvas, select, [role="tablist"], [role="radiogroup"], [role="group"]')) return;
+    if (document.body.classList.contains("menu-open")) return;
     if (e.key === "ArrowRight") go(step + 1);
     if (e.key === "ArrowLeft") go(step - 1);
   };
@@ -561,7 +630,9 @@ function openLightbox(plate) {
   const box = document.createElement("div");
   box.className = "lightbox";
   box.setAttribute("role", "dialog");
+  box.setAttribute("aria-modal", "true");
   box.setAttribute("aria-label", img.alt);
+  const opener = plate.querySelector("a");
   box.innerHTML = `
     <button class="lb-close" aria-label="Close">×</button>
     <img src="${esc(img.src)}" alt="${esc(img.alt)}" />
@@ -570,11 +641,17 @@ function openLightbox(plate) {
     box.classList.add("out");
     setTimeout(() => box.remove(), 300);
     removeEventListener("keydown", onKey);
+    setPageInert(false);
+    opener?.focus();
   };
-  const onKey = (e) => e.key === "Escape" && close();
+  const onKey = (e) => {
+    if (e.key === "Escape") close();
+    else keepFocusIn(box, e);
+  };
   box.addEventListener("click", (e) => { if (!e.target.closest("a")) close(); });
   addEventListener("keydown", onKey);
   document.body.append(box);
+  setPageInert(true);
   box.querySelector(".lb-close").focus();
 }
 
@@ -584,7 +661,7 @@ const CHAKRA_STEPS = ["What it is", "Signs of a block", "In balance", "How to un
 let chakraStep = 0;
 
 function renderChakras(id) {
-  const c = chakraById[id] || chakraById.heart;
+  const c = own(chakraById, id) || chakraById.heart;
   setTheme("chakra", c.color);
 
   const slides = [
@@ -676,7 +753,7 @@ const guideStep = {};
 
 function renderGuide(level) {
   setTheme("library");
-  const plan = GUIDE[level];
+  const plan = own(GUIDE, level);
   if (!plan) {
     view.innerHTML = `
       <section class="guide-pick fade">
@@ -739,6 +816,7 @@ function renderGuide(level) {
 
 // ---------- Router ----------
 
+let lastPage = null;
 function route() {
   const [, page = "", id, sub] = location.hash.replace(/^#/, "").split("/");
   document.querySelectorAll("[data-nav]").forEach((a) =>
@@ -753,6 +831,15 @@ function route() {
   else if (page === "guide") renderGuide(id);
   else renderHome();
   if (page !== "chakras" || !id) window.scrollTo(0, 0);
+  // name the page in the tab title, and on moving to another page put focus on its heading
+  const heading = view.querySelector("h1");
+  const name = page && heading ? [...heading.childNodes].map((n) => n.textContent.trim()).filter(Boolean).join(" ") : "";
+  document.title = name ? `${name} · Stillpoint` : "Stillpoint";
+  if (lastPage !== null && page !== lastPage && page && heading) {
+    heading.tabIndex = -1;
+    heading.focus({ preventScroll: true });
+  }
+  lastPage = page;
 }
 
 // Background scene: green hills or calm water, remembered between visits.
@@ -764,19 +851,24 @@ function setScene(scene) {
   let meta = document.querySelector('meta[name="theme-color"]');
   if (!meta) { meta = document.createElement("meta"); meta.name = "theme-color"; document.head.append(meta); }
   meta.content = sky;
-  document.querySelectorAll("button[data-scene]").forEach((b) => b.setAttribute("aria-checked", String(b.dataset.scene === scene)));
+  document.querySelectorAll("button[data-scene]").forEach((b) => {
+    b.setAttribute("aria-checked", String(b.dataset.scene === scene));
+    b.tabIndex = b.dataset.scene === scene ? 0 : -1;
+  });
   try { localStorage.setItem("stillpoint-scene", scene); } catch {}
 }
 let savedScene = "hills";
 try { const v = localStorage.getItem("stillpoint-scene"); if (["water", "sunrise"].includes(v)) savedScene = v; } catch {}
 setScene(savedScene);
 document.querySelectorAll("button[data-scene]").forEach((b) => b.addEventListener("click", () => setScene(b.dataset.scene)));
+document.querySelectorAll('[role="radiogroup"]').forEach((g) => g.addEventListener("keydown", (e) => arrowKeys(g, e, (b) => setScene(b.dataset.scene))));
 
 // Small screens: one Menu button opens a full-screen sheet.
 const menuBtn = document.querySelector(".menu-btn");
 const menuSheet = document.getElementById("menu-sheet");
 function setMenu(open) {
   menuBtn.setAttribute("aria-expanded", String(open));
+  setPageInert(open);
   if (open) {
     menuSheet.hidden = false;
     requestAnimationFrame(() => menuSheet.classList.add("open"));
@@ -789,8 +881,16 @@ function setMenu(open) {
 }
 menuBtn.addEventListener("click", () => setMenu(true));
 menuSheet.querySelector(".menu-close").addEventListener("click", () => { setMenu(false); menuBtn.focus(); });
-menuSheet.querySelectorAll(".menu-links a").forEach((a) => a.addEventListener("click", () => setMenu(false)));
-addEventListener("keydown", (e) => { if (e.key === "Escape" && !menuSheet.hidden) { setMenu(false); menuBtn.focus(); } });
+menuSheet.querySelectorAll(".menu-links a").forEach((a) => a.addEventListener("click", () => {
+  setMenu(false);
+  // a new page puts focus on its heading; staying on the same page returns it to the Menu button
+  setTimeout(() => { if (menuSheet.contains(document.activeElement) || document.activeElement === document.body) menuBtn.focus(); }, 60);
+}));
+addEventListener("keydown", (e) => {
+  if (menuSheet.hidden) return;
+  if (e.key === "Escape") { setMenu(false); menuBtn.focus(); }
+  else keepFocusIn(menuSheet, e);
+});
 
 // The chakras page sizes itself to the window below the nav.
 const setNavHeight = () =>

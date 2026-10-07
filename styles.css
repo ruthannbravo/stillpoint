@@ -1479,3 +1479,18 @@ body { background-color: transparent; }
   .bg .photo { inset: 0; height: 100%; min-height: 0; }
 }
 @media (max-width: 860px) { #results .results { grid-template-columns: 1fr; } }
+
+/* Phone menu: scroll instead of cutting off on short screens (landscape phones, enlarged text) */
+.menu-sheet { overflow-y: auto; overscroll-behavior: contain; }
+@media (max-height: 520px) {
+  .menu-sheet { padding-top: max(64px, calc(env(safe-area-inset-top, 0px) + 56px)); gap: 18px; }
+  .menu-links a { font-size: clamp(28px, 8vh, 40px); padding: 8px 0; }
+}
+
+/* Chakra picker on Find uses buttons; same look as the chakras page */
+.chakra-dots button { position: relative; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 0; padding: 0; background: none; cursor: pointer; }
+.chakra-dots button:hover i { transform: scale(1.35); }
+.chakra-dots button.on i { transform: scale(1.5); box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.85), 0 0 14px 3px color-mix(in oklab, var(--k) 70%, transparent); }
+.chakra-dots button:hover span, .chakra-dots button:focus-visible span { opacity: 1; transform: none; }
+.chakra-dots button:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
+
