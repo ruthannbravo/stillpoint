@@ -96,7 +96,7 @@ const Body3D = (() => {
     if (anatomyData) return;
     status("Loading anatomical model…");
     if (!anatomyPromise) {
-      anatomyPromise = fetch("assets/anatomy.json").then(response => {
+      anatomyPromise = fetch("assets/anatomy.json?v=1").then(response => {
         if (!response.ok) throw new Error("Body asset unavailable");
         return response.json();
       }).then(data => {
@@ -213,7 +213,7 @@ const Body3D = (() => {
     }
     figure.add(model);
     applySurface();
-    renderer.domElement.setAttribute("aria-label", `${bodyType} anatomical 3D body. Drag or use arrow keys to rotate. Use the chakra list to select a chakra.`);
+    renderer.domElement.setAttribute("aria-label", `${bodyType} anatomical 3D body. Drag or use arrow keys to rotate. Use the chakra buttons beside it to select a chakra.`);
   }
 
   function applySurface() {
@@ -309,9 +309,11 @@ const Body3D = (() => {
 
     const el = renderer.domElement;
     el.className = "body-canvas";
+    // draw only while the body is on screen (saves battery on phones)
+    new IntersectionObserver(([entry]) => { onScreen = entry.isIntersecting; }).observe(el);
     el.tabIndex = 0;
     el.setAttribute("role", "img");
-    el.setAttribute("aria-label", `${bodyType} 3D body. Drag or use arrow keys to rotate. Use the chakra list to select a chakra.`);
+    el.setAttribute("aria-label", `${bodyType} 3D body. Drag or use arrow keys to rotate. Use the chakra buttons beside it to select a chakra.`);
     el.addEventListener("wheel", onWheel, { passive: false });
     el.addEventListener("pointerdown", onDown);
     el.addEventListener("pointermove", onMove);
@@ -421,9 +423,10 @@ const Body3D = (() => {
     tZoom = 1;
   }
 
+  let onScreen = true;
   function loop() {
     requestAnimationFrame(loop);
-    if (!host || !renderer.domElement.isConnected) return;
+    if (!host || !renderer.domElement.isConnected || !onScreen) return;
     const t = clock.getElapsedTime();
 
     if (!dragging) {

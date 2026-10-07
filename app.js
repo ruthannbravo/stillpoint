@@ -234,7 +234,7 @@ function renderHome() {
   // re-measure if the page was laid out while hidden (e.g. opened in a background tab)
   q.addEventListener("focus", grow);
   q.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey && !e.isComposing) {
       e.preventDefault();
       submit();
     }
@@ -270,14 +270,14 @@ function renderResults(scroll) {
   const el = document.getElementById("results");
 
   const crisis = r.crisis
-    ? `<div class="care glass">
+    ? `<div class="care glass" role="alert">
         <strong>You don't have to hold this alone.</strong>
         It sounds like you're carrying something very heavy. If you're thinking about ending your life or hurting yourself,
         please call or text <a href="tel:988">988</a> (Canada &amp; US) or your local emergency number. You deserve real support right now.
         The practices below can help you through the next few minutes, alongside that support.
       </div>`
     : r.support
-    ? `<div class="care glass">
+    ? `<div class="care glass" role="status">
         <strong>That sounds really heavy.</strong>
         The practices below can help you through the next few minutes. And if it ever starts to feel like too much,
         you can call or text <a href="tel:988">988</a> (Canada &amp; US) any time, to talk to someone.
@@ -345,11 +345,12 @@ function renderResults(scroll) {
   document.querySelectorAll("#stage [data-pick]").forEach((b) => b.addEventListener("click", () => pick(b.dataset.pick)));
   showFocus();
 
-  announce(`${r.meditations.length} meditations suggested${r.concerns.length ? ` for ${r.concerns.slice(0, 3).join(", ")}` : ""}.`);
+  const care = r.crisis || r.support ? "Support is available any time: call or text 988 in Canada and the US. " : "";
+  announce(`${care}${r.meditations.length} meditations suggested${r.concerns.length ? ` for ${r.concerns.slice(0, 3).join(", ")}` : ""}.`);
   el.classList.remove("in");
   void el.offsetWidth;
   el.classList.add("in");
-  if (scroll) el.scrollIntoView({ behavior: "smooth", block: "start" });
+  if (scroll) el.scrollIntoView({ behavior: reducedMotion() ? "auto" : "smooth", block: "start" });
 }
 
 // ---------- Meditations ----------
@@ -560,7 +561,7 @@ function stepper(root, slides, labels, { start = 0, onChange } = {}) {
 
   // swipe / drag sideways, and horizontal trackpad scroll
   let sx = null;
-  slide.addEventListener("pointerdown", (e) => { if (!e.target.closest("a, button, .dates")) sx = e.clientX; });
+  slide.addEventListener("pointerdown", (e) => { if (e.pointerType !== "mouse" && !e.target.closest("a, button, .dates")) sx = e.clientX; });
   slide.addEventListener("pointerup", (e) => {
     if (sx === null) return;
     const dx = e.clientX - sx;
@@ -581,10 +582,11 @@ function stepper(root, slides, labels, { start = 0, onChange } = {}) {
     if (document.querySelector(".lightbox")) return;
     if (e.target.closest?.('input, textarea, canvas, select, [role="tablist"], [role="radiogroup"], [role="group"]')) return;
     if (document.body.classList.contains("menu-open")) return;
+    if (e.altKey || e.metaKey || e.ctrlKey || e.shiftKey) return;
     if (e.key === "ArrowRight") go(step + 1);
     if (e.key === "ArrowLeft") go(step - 1);
   };
-  addEventListener("keydown", onKey);
+  addEventListener("keydown", onKey, { signal: pageSignal() });
 
   go(start);
 }
@@ -638,11 +640,13 @@ function openLightbox(plate) {
     <img src="${esc(img.src)}" alt="${esc(img.alt)}" />
     <p>${esc(plate.querySelector("figcaption").firstChild.textContent)}<small>${esc(plate.querySelector("figcaption small").textContent)}</small> <a href="${esc(plate.querySelector("a").href)}" target="_blank" rel="noopener noreferrer">View source ↗</a></p>`;
   const close = () => {
+    if (!box.isConnected || box.classList.contains("out")) return;
     box.classList.add("out");
     setTimeout(() => box.remove(), 300);
     removeEventListener("keydown", onKey);
+    removeEventListener("hashchange", close);
     setPageInert(false);
-    opener?.focus();
+    if (opener?.isConnected) opener.focus();
   };
   const onKey = (e) => {
     if (e.key === "Escape") close();
@@ -650,6 +654,7 @@ function openLightbox(plate) {
   };
   box.addEventListener("click", (e) => { if (!e.target.closest("a")) close(); });
   addEventListener("keydown", onKey);
+  addEventListener("hashchange", close);
   document.body.append(box);
   setPageInert(true);
   box.querySelector(".lb-close").focus();
@@ -707,9 +712,6 @@ function renderChakras(id) {
       <div class="body-pane">
         ${stageHTML()}
         <p class="chakra-note">Click a chakra on the body to explore it<span> · Chakras are a traditional framework, not a medical diagnosis</span></p>
-        <nav class="chakra-list sr-only" aria-label="Chakras">
-          ${CHAKRAS.map((k) => `<a href="#/chakras/${k.id}" class="${k.id === c.id ? "on" : ""}" style="--k:${k.color}" title="${k.name}"><i></i><span>${k.name}</span></a>`).join("")}
-        </nav>
       </div>
       <article class="chakra-read fade">
         <header class="chakra-head">
@@ -817,11 +819,20 @@ function renderGuide(level) {
 // ---------- Router ----------
 
 let lastPage = null;
+let pageAbort = new AbortController();
+// listeners tied to the current page pass this signal, so they go away when the page changes
+const pageSignal = () => pageAbort.signal;
+const reducedMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 function route() {
+  pageAbort.abort();
+  pageAbort = new AbortController();
+  const fromPicker = !!document.activeElement?.closest?.(".chakra-dots");
   const [, page = "", id, sub] = location.hash.replace(/^#/, "").split("/");
-  document.querySelectorAll("[data-nav]").forEach((a) =>
-    a.classList.toggle("on", a.dataset.nav === (page || "home"))
-  );
+  document.querySelectorAll("[data-nav]").forEach((a) => {
+    const current = a.dataset.nav === (page || "home");
+    a.classList.toggle("on", current);
+    if (current) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+  });
   // a remembered "back" only applies to the meditation page opened from it
   if (page !== "meditations" || !id) {
     if (!["guide", "chakras"].includes(page)) backTo = null;
@@ -835,7 +846,11 @@ function route() {
   const heading = view.querySelector("h1");
   const name = page && heading ? [...heading.childNodes].map((n) => n.textContent.trim()).filter(Boolean).join(" ") : "";
   document.title = name ? `${name} · Stillpoint` : "Stillpoint";
-  if (lastPage !== null && page !== lastPage && page && heading) {
+  // hopping between chakras with the picker keeps focus on it; any other navigation moves focus to the new heading
+  const hopping = page === "chakras" && lastPage === "chakras";
+  const currentDot = hopping && fromPicker ? view.querySelector('.chakra-dots [aria-current="page"]') : null;
+  if (currentDot) currentDot.focus({ preventScroll: true });
+  else if (lastPage !== null && page && heading) {
     heading.tabIndex = -1;
     heading.focus({ preventScroll: true });
   }
@@ -880,6 +895,7 @@ function setMenu(open) {
   document.body.classList.toggle("menu-open", open);
 }
 menuBtn.addEventListener("click", () => setMenu(true));
+matchMedia("(min-width: 761px)").addEventListener("change", (e) => { if (e.matches && !menuSheet.hidden) setMenu(false); });
 menuSheet.querySelector(".menu-close").addEventListener("click", () => { setMenu(false); menuBtn.focus(); });
 menuSheet.querySelectorAll(".menu-links a").forEach((a) => a.addEventListener("click", () => {
   setMenu(false);
@@ -897,6 +913,12 @@ const setNavHeight = () =>
   document.documentElement.style.setProperty("--nav-h", `${document.querySelector(".nav").offsetHeight}px`);
 setNavHeight();
 window.addEventListener("resize", setNavHeight);
+
+document.querySelector(".skip-link")?.addEventListener("click", () => {
+  const target = view.querySelector("h1") || view;
+  target.tabIndex = -1;
+  target.focus();
+});
 
 window.addEventListener("hashchange", route);
 route();

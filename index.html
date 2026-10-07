@@ -16,9 +16,10 @@
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="preload" href="assets/bg-hills.jpg" as="image" />
   <link rel="stylesheet" href="assets/fonts/fonts.css" />
-  <link rel="stylesheet" href="styles.css?v=21" />
+  <link rel="stylesheet" href="styles.css?v=22" />
 </head>
 <body data-theme="home">
+  <button type="button" class="skip-link">Skip to content</button>
   <div class="bg" aria-hidden="true">
     <div class="photo hills"></div>
     <div class="photo water"></div>
@@ -42,7 +43,7 @@
         </button>
       </div>
     </div>
-    <nav class="glass">
+    <nav class="glass" aria-label="Main">
       <a href="#/" data-nav="home">Find</a>
       <a href="#/meditations" data-nav="meditations">Meditations</a>
       <a href="#/chakras" data-nav="chakras">Chakras</a>
@@ -57,10 +58,10 @@
   <div class="menu-sheet" id="menu-sheet" hidden>
     <button class="menu-close" aria-label="Close menu">×</button>
     <nav class="menu-links" aria-label="Main">
-      <a href="#/" data-nav="home"><em>01</em>Find</a>
-      <a href="#/meditations" data-nav="meditations"><em>02</em>Meditations</a>
-      <a href="#/chakras" data-nav="chakras"><em>03</em>Chakras</a>
-      <a href="#/guide" data-nav="guide"><em>04</em>Guide</a>
+      <a href="#/" data-nav="home"><em aria-hidden="true">01</em>Find</a>
+      <a href="#/meditations" data-nav="meditations"><em aria-hidden="true">02</em>Meditations</a>
+      <a href="#/chakras" data-nav="chakras"><em aria-hidden="true">03</em>Chakras</a>
+      <a href="#/guide" data-nav="guide"><em aria-hidden="true">04</em>Guide</a>
     </nav>
     <div class="menu-scenes" role="radiogroup" aria-label="Background">
       <span>Background</span>
@@ -80,7 +81,7 @@
 
   <script defer src="assets/vendor/three.min.js"></script>
   <script defer src="data.js?v=4"></script>
-  <script defer src="body3d.js?v=4"></script>
-  <script defer src="app.js?v=14"></script>
+  <script defer src="body3d.js?v=5"></script>
+  <script defer src="app.js?v=15"></script>
 </body>
 </html>
