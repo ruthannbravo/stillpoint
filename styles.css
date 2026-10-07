@@ -1494,3 +1494,6 @@ body { background-color: transparent; }
 .chakra-dots button:hover span, .chakra-dots button:focus-visible span { opacity: 1; transform: none; }
 .chakra-dots button:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
 
+
+/* No-3D message stays clear of the chakra picker on the right */
+.stage:has(.chakra-dots) .model-status { right: 64px; }
