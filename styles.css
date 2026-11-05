@@ -1692,3 +1692,35 @@ body[data-scene="water"][data-theme] .card:hover { background: rgba(10, 26, 38, 
 body[data-scene="sunrise"][data-theme] .card { background: rgba(34, 20, 32, 0.42); }
 body[data-scene="sunrise"][data-theme] .card:hover { background: rgba(34, 20, 32, 0.52); }
 .card p, .card .helps { color: rgba(255, 255, 255, 0.86); }
+
+/* A quiet invitation above Find, with a simple editorial how-to page. */
+.home-screen-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  margin-bottom: 16px;
+  padding: 8px 4px;
+  color: var(--soft);
+  font-size: 13px;
+  text-underline-offset: 5px;
+  text-decoration-color: var(--hair);
+}
+.home-screen-link:hover { color: var(--ink); text-decoration-color: currentColor; }
+.home-screen-link:focus-visible { outline: 2px solid #fff; outline-offset: 4px; border-radius: 4px; }
+.home-screen-page { max-width: 1000px; margin: 28px auto 0; }
+.home-screen-page .page-head { padding: 12px 0 40px; }
+.home-screen-page h1 { font-size: clamp(30px, 4.4vw, 60px); line-height: 1.1; }
+.home-screen-steps { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px, 5vw, 72px); }
+.home-screen-steps section { border-top: 1px solid var(--hair); padding-top: 24px; }
+.home-screen-steps h2 { font-size: 26px; margin: 6px 0 20px; }
+.home-screen-steps ol { padding-left: 22px; margin: 0; }
+.home-screen-steps li { padding-left: 6px; margin-bottom: 18px; font-size: 15px; }
+.home-screen-steps strong { font-weight: 500; }
+.home-screen-steps li a { text-underline-offset: 3px; }
+.home-screen-note { color: var(--soft); font-size: 13px; margin: 24px 0 16px; }
+@media (max-width: 760px) {
+  .home-screen-steps { grid-template-columns: 1fr; }
+  .home-screen-page { margin-top: 16px; }
+  .home-screen-page .page-head { padding-bottom: 28px; }
+  .home-screen-steps h2 { font-size: 22px; }
+}

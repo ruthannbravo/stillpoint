@@ -214,6 +214,7 @@ function renderHome() {
   setTheme("home");
   view.innerHTML = `
     <section class="hero ${lastQuery ? "compact" : "intro"}">
+      <a class="home-screen-link" href="#/home-screen">Add to your home screen</a>
       <h1>${["What", "are", "you", "<em>carrying</em>", "today?"].map((w, i) => `<span class="w" style="--i:${i}">${w}</span>`).join(" ")}</h1>
       <p class="lede">Describe how you feel, in your own words. We'll find a meditation and show where it may be sitting in your body.</p>
       <form class="search glass" id="search" autocomplete="off">
@@ -814,6 +815,46 @@ function renderGuide(level) {
   });
 }
 
+// ---------- Home screen instructions ----------
+
+function renderHomeScreen() {
+  setTheme("library");
+  view.innerHTML = `
+    <article class="home-screen-page">
+      <a class="back" href="#/">${icon("l", 16)} Back to Find</a>
+      <header class="page-head">
+        <h1>Add to your home screen</h1>
+        <p class="lede">Keep Stillpoint a tap away. Save it beside your apps, ready for a moment of calm.</p>
+      </header>
+      <div class="home-screen-steps">
+        <section aria-labelledby="home-screen-apple">
+          <span class="eyebrow">Safari</span>
+          <h2 id="home-screen-apple">iPhone &amp; iPad</h2>
+          <ol>
+            <li>Open <a href="/">Stillpoint</a> in <strong>Safari</strong>.</li>
+            <li>Open the <strong>Share</strong> menu (the square with an arrow pointing up). You may need to tap the menu button first.</li>
+            <li>Scroll down and tap <strong>Add to Home Screen</strong>.</li>
+            <li>Keep the name Stillpoint. If you see <strong>Open as Web App</strong>, turn it on, then tap <strong>Add</strong>.</li>
+          </ol>
+          <p class="home-screen-note">Can’t find Add to Home Screen? Scroll to the bottom of the share menu, tap Edit Actions, and add it there.</p>
+          <a class="link" href="https://support.apple.com/guide/iphone/bookmark-a-website-iph42ab2f3a7/ios" target="_blank" rel="noopener">Apple’s instructions ↗</a>
+        </section>
+        <section aria-labelledby="home-screen-android">
+          <span class="eyebrow">Chrome</span>
+          <h2 id="home-screen-android">Android</h2>
+          <ol>
+            <li>Open <a href="/">Stillpoint</a> in <strong>Chrome</strong>.</li>
+            <li>Tap the <strong>three-dot menu</strong> beside the address bar.</li>
+            <li>Choose <strong>Install and create shortcut</strong>, then <strong>Create shortcut</strong>. On some versions, choose <strong>Add to Home screen</strong>.</li>
+            <li>Keep the name Stillpoint, tap <strong>Add</strong>, and confirm if asked.</li>
+          </ol>
+          <p class="home-screen-note">Your new shortcut opens Stillpoint in Chrome. Tap it on your home screen whenever you want to return.</p>
+          <a class="link" href="https://support.google.com/chrome/answer/15085120?hl=en&amp;co=GENIE.Platform%3DAndroid" target="_blank" rel="noopener">Google’s instructions ↗</a>
+        </section>
+      </div>
+    </article>`;
+}
+
 // ---------- Router ----------
 
 let lastPage = null;
@@ -838,6 +879,7 @@ function route() {
   if (page === "meditations") id ? renderMeditation(id, sub) : renderLibrary();
   else if (page === "chakras") renderChakras(id);
   else if (page === "guide") renderGuide(id);
+  else if (page === "home-screen") renderHomeScreen();
   else renderHome();
   if (page !== "chakras" || !id) window.scrollTo(0, 0);
   // name the page in the tab title, and on moving to another page put focus on its heading
