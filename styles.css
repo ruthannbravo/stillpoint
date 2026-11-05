@@ -1486,8 +1486,7 @@ body { background-color: transparent; }
 /* No-3D message stays clear of the chakra picker on the right */
 .stage:has(.chakra-dots) .model-status { right: 64px; }
 
-/* Review round 2 (October 6): keyboard focus on the search box, reduced motion, notched phones, skip link */
-.search:focus-within { outline: 2px solid rgba(255, 255, 255, 0.9); outline-offset: 3px; }
+/* Review round 2 (October 6): reduced motion, notched phones, skip link */
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 .lb-close { top: max(20px, calc(env(safe-area-inset-top, 0px) + 12px)); }
 .skip-link { position: fixed; top: 12px; left: 12px; z-index: 300; padding: 10px 16px; border-radius: 999px; border: 0; background: #fff; color: #2c3b40; font: inherit; font-size: 14px; cursor: pointer; transform: translateY(-200%); }
@@ -1601,7 +1600,6 @@ h1 em, h2 em, h3 em { font-weight: 200; opacity: 0.8; }
 .search { margin-top: 28px; padding: 6px 6px 6px 22px; border-radius: 999px; max-width: 640px; }
 .search textarea, .search textarea { font-size: 17px; font-weight: 300; line-height: 1.5; padding: 5px 0; }
 .search button { width: 38px; height: 38px; }
-.search:focus-within { outline: 1px solid rgba(255, 255, 255, 0.6); outline-offset: 2px; }
 .bubble { font-size: 13px; padding: 8px 15px; }
 @media (max-width: 760px) {
   .search { margin-top: 22px; padding: 5px 5px 5px 18px; }
