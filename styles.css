@@ -1747,3 +1747,7 @@ body[data-scene="sunrise"][data-theme] .card:hover { background: rgba(34, 20, 32
 .m-app { font-style: normal; width: 34px; height: 34px; border-radius: 9px; background: linear-gradient(160deg, #6b889f, #2f4a5c); color: #fff; font-size: 6.5px; display: grid; place-items: center; letter-spacing: -0.02em; flex-shrink: 0; }
 .home-screen-steps li { margin-bottom: 22px; }
 .m-row:has(.m-app) em { text-align: left; }
+
+/* titles: one even weight, no faded word */
+h1 em, h2 em, h3 em { font-weight: inherit; opacity: 1; color: inherit; }
+.chakra-head h1 em { color: var(--soft); }

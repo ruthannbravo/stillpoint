@@ -367,7 +367,7 @@ function renderLibrary() {
   const list = MEDITATIONS.filter((m) => libraryFilter === "all" || m.tags.includes(libraryFilter));
   view.innerHTML = `
     <section class="page-head center">
-      <h1>Move towards <em>what brings you…</em></h1>
+      <h1>Meditation library</h1>
       <p class="lede">Fourteen practices from traditions around the world. Choose one to learn where it comes from and how to begin.</p>
       <div class="filters" role="group" aria-label="Filter meditations">
         ${FILTERS.map(([k, label]) => `<button class="bubble ${k === libraryFilter ? "on" : ""}" data-filter="${k}" data-tag="${k}" aria-pressed="${k === libraryFilter}">${k === "all" ? "" : `<i class="tag-dot" aria-hidden="true"></i>`}${label}</button>`).join("")}
