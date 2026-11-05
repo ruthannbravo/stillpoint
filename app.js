@@ -188,7 +188,7 @@ function readout(c, label) {
 
 function medCard(m, reason) {
   return `
-    <a class="card glass" href="#/meditations/${m.id}">
+    <a class="card glass" data-tag="${m.tags[0]}" href="#/meditations/${m.id}">
       <h3>${esc(m.name)}</h3>
       <p>${esc(m.summary)}</p>
       <p class="helps"><span>Helps with</span>${m.usedFor.slice(0, 3).map((u) => esc(u.toLowerCase())).join(" · ")}</p>
@@ -369,7 +369,7 @@ function renderLibrary() {
       <h1>Move towards <em>what brings you…</em></h1>
       <p class="lede">Fourteen practices from traditions around the world. Choose one to learn where it comes from and how to begin.</p>
       <div class="filters" role="group" aria-label="Filter meditations">
-        ${FILTERS.map(([k, label]) => `<button class="bubble ${k === libraryFilter ? "on" : ""}" data-filter="${k}" aria-pressed="${k === libraryFilter}">${label}</button>`).join("")}
+        ${FILTERS.map(([k, label]) => `<button class="bubble ${k === libraryFilter ? "on" : ""}" data-filter="${k}" data-tag="${k}" aria-pressed="${k === libraryFilter}">${label}</button>`).join("")}
       </div>
     </section>
     <section class="grid fade">${list.map((m) => medCard(m)).join("")}</section>`;
