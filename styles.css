@@ -1561,3 +1561,46 @@ h1 em, h2 em, h3 em { font-weight: 200; opacity: 0.8; }
   body[data-theme="library"][data-scene="sunrise"] .bg .photo.sunrise { background-image: url("assets/bg-sunrise-soft.jpg"); }
 }
 .chakra-head h1 { margin-bottom: 22px; }
+
+/* ---------- Compact scale: less scrolling, calmer sizes ---------- */
+.hero h1 { font-size: clamp(32px, 5vw, 60px); }
+.med-head h1, .page-head h1, .guide-pick h1 { font-size: clamp(32px, 4.4vw, 60px); line-height: 1.05; letter-spacing: -0.025em; }
+.chakra-head h1, .chakra-head h1 { font-size: clamp(32px, 3.6vw, 52px); line-height: 1.05; }
+.chakra-head h1 em { font-size: 0.55em; margin-top: 2px; }
+.ed h2, .chakra-read .ed h2 { font-size: clamp(24px, 2.4vw, 34px); line-height: 1.15; margin: 4px 0 18px; }
+.ed .sub { margin: -8px 0 20px; font-size: 11px; }
+.ed h2.how-title { margin-top: clamp(32px, 4vw, 48px); }
+.ed p { font-size: 15px; line-height: 1.7; }
+.ed p.lead, .chakra-read .ed p.lead { font-size: clamp(16px, 1.3vw, 19px); line-height: 1.65; max-width: 60ch; }
+.lede { font-size: 15px; }
+.med-head .alt, .chakra-head .alt { font-size: 15px; margin-top: 8px; }
+.timeline { margin: clamp(24px, 3.5vw, 40px) 0 clamp(24px, 3.5vw, 40px); }
+.slide, .chakra-read .slide { min-height: 0; }
+.pager { margin-top: clamp(28px, 4vw, 48px); padding-top: 16px; }
+.count { font-size: 30px; }
+.uses li, .signs-list li { font-size: clamp(17px, 1.6vw, 22px); padding: 10px 0; }
+.uses.compact li { font-size: clamp(16px, 1.4vw, 19px); padding: 8px 0; }
+.how li { padding: 14px 0; gap: 16px; }
+.how em { font-size: 26px; }
+.how span { font-size: 15px; }
+.meta { margin-bottom: 22px; }
+.meta dd { font-size: 15px; }
+.vid { padding: 14px 0; }
+.vid strong, .chakra-read .vid strong { font-size: clamp(17px, 1.6vw, 22px); }
+.vid .play, .chakra-read .vid .play { width: 38px; height: 38px; }
+.level strong { font-size: clamp(22px, 2.2vw, 32px); }
+.dates-title { font-size: 20px; margin-top: clamp(28px, 4vw, 44px); }
+.dates .when { font-size: clamp(20px, 1.8vw, 26px); }
+.dates .what { font-size: 14px; }
+.back { margin-bottom: 20px; padding: 8px 16px 8px 12px; font-size: 13px; }
+
+/* Key dates: the date nearest the left edge lights up as you swipe; nothing
+   moves off the line, so the line stays whole */
+.dates li, .dates li:hover, .dates li:focus { transform: none; }
+.dates li { opacity: 0.45; transition: opacity 0.4s; }
+.dates:hover li, .dates:focus-within li { opacity: 0.45; }
+.dates li.on, .dates li:hover, .dates li:focus { opacity: 1; }
+.dates li::before { transition: transform 0.5s cubic-bezier(.3, 1.6, .5, 1), background 0.4s; }
+.dates li.on::before { transform: scale(1.6); background: #fff; }
+.dates li:hover .when, .dates li:focus .when { transform: none; }
+.dates li.on .what { color: var(--ink); }

@@ -459,7 +459,7 @@ function renderMeditation(id, section) {
         ${m.history.map((p, i) => `<p class="${i ? "" : "lead"}">${esc(p)}</p>`).join("")}
       </div>
       ${past.milestones.length ? `
-        <h3 class="dates-title">Key dates <small>Hover to look closer · scroll sideways for more</small></h3>
+        <h3 class="dates-title">Key dates <small>Swipe sideways for more</small></h3>
         <ol class="dates">${past.milestones.map(([when, what]) => `
           <li tabindex="0"><span class="when">${esc(when)}</span><span class="what">${esc(what)}</span></li>`).join("")}
         </ol>` : ""}
@@ -621,6 +621,20 @@ function enhanceSlide(slide) {
       e.preventDefault();
       dates.scrollLeft += e.deltaY;
     }, { passive: false });
+    // light up the date nearest the left edge as the row scrolls
+    const items = [...dates.children];
+    const mark = () => {
+      const left = dates.getBoundingClientRect().left + parseFloat(getComputedStyle(dates).scrollPaddingLeft || 0);
+      let best = items[0], dist = Infinity;
+      for (const li of items) {
+        const d = Math.abs(li.getBoundingClientRect().left - left);
+        if (d < dist) { dist = d; best = li; }
+      }
+      items.forEach((li) => li.classList.toggle("on", li === best));
+    };
+    let ticking = false;
+    dates.addEventListener("scroll", () => { if (!ticking) { ticking = true; requestAnimationFrame(() => { ticking = false; mark(); }); } }, { passive: true });
+    mark();
   }
 }
 
@@ -750,7 +764,6 @@ function renderGuide(level) {
   if (!plan) {
     view.innerHTML = `
       <section class="guide-pick fade">
-        <span class="eyebrow">Guide</span>
         <h1>Where are you <em>starting</em> from?</h1>
         <p class="lede">Choose your level and we'll give you a gentle four-week plan to begin.</p>
         <div class="levels">
