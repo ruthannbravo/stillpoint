@@ -1567,7 +1567,7 @@ h1 em, h2 em, h3 em { font-weight: 200; opacity: 0.8; }
 .med-head h1, .page-head h1, .guide-pick h1 { font-size: clamp(32px, 4.4vw, 60px); line-height: 1.05; letter-spacing: -0.025em; }
 .chakra-head h1, .chakra-head h1 { font-size: clamp(32px, 3.6vw, 52px); line-height: 1.05; }
 .chakra-head h1 em { font-size: 0.55em; margin-top: 2px; }
-.ed h2, .chakra-read .ed h2 { font-size: clamp(24px, 2.4vw, 34px); line-height: 1.15; margin: 4px 0 18px; }
+.ed h2, .med .ed h2, .chakra-read .ed h2 { font-size: clamp(24px, 2.4vw, 34px); line-height: 1.15; margin: 4px 0 18px; }
 .ed .sub { margin: -8px 0 20px; font-size: 11px; }
 .ed h2.how-title { margin-top: clamp(32px, 4vw, 48px); }
 .ed p { font-size: 15px; line-height: 1.7; }
@@ -1604,3 +1604,68 @@ h1 em, h2 em, h3 em { font-weight: 200; opacity: 0.8; }
 .dates li.on::before { transform: scale(1.6); background: #fff; }
 .dates li:hover .when, .dates li:focus .when { transform: none; }
 .dates li.on .what { color: var(--ink); }
+
+/* chakras: no step counter in the corner, buttons stay on the right */
+.chakra-read .count { display: none; }
+.chakra-read .pager { justify-content: flex-end; }
+
+/* Search: slimmer and sleeker */
+.search { margin-top: 28px; padding: 6px 6px 6px 22px; border-radius: 999px; max-width: 640px; }
+.search textarea, .search textarea { font-size: 17px; font-weight: 300; line-height: 1.5; padding: 5px 0; }
+.search button { width: 38px; height: 38px; }
+.search:focus-within { outline: 1px solid rgba(255, 255, 255, 0.6); outline-offset: 2px; }
+.bubble { font-size: 13px; padding: 8px 15px; }
+@media (max-width: 760px) {
+  .search { margin-top: 22px; padding: 5px 5px 5px 18px; }
+  .search textarea { font-size: 16px; } /* 16px stops iPhone zooming in on tap */
+  .search button { width: 34px; height: 34px; }
+  .hero h1 { font-size: 30px; }
+  .lede { font-size: 14px; }
+  .prompts { gap: 8px; margin-top: 20px; }
+  .bubble { font-size: 12.5px; padding: 7px 13px; }
+}
+
+/* ---------- Smaller and sleeker, round 2 ---------- */
+/* no step counters */
+.count { display: none; }
+.pager { justify-content: flex-end; }
+/* results: what we heard leads; section titles are small labels */
+.heard { font-size: clamp(22px, 2.6vw, 32px); color: var(--ink); font-weight: 300; line-height: 1.3; margin-top: 8px; }
+.heard em { color: var(--ink); font-weight: 400; }
+.section-title.small { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--soft); font-weight: 400; margin: 32px 0 12px; }
+#results { scroll-margin-top: calc(env(safe-area-inset-top, 0px) + 84px); }
+/* cards */
+.card { padding: 18px 18px 14px; gap: 4px; border-radius: 20px; }
+.card h3 { font-size: clamp(18px, 1.6vw, 22px); }
+.card p { font-size: 13px; }
+.card .helps { font-size: 12px; }
+.grid, .picks { grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: 14px; }
+/* top bar */
+.nav { padding-top: 16px; padding-bottom: 16px; }
+.nav nav a { font-size: 12px; padding: 6px 13px; }
+.wordmark { font-size: 18px; }
+/* timeline labels */
+.node i { width: 20px; height: 20px; }
+.node span { font-size: 12px; }
+.timeline .track { top: 18px; }
+/* key-practice levels */
+.level small, .level span { font-size: 13px; }
+/* "how to unblock" and guide lists without numbers */
+.how.plain li { padding: 12px 0; }
+
+@media (max-width: 760px) {
+  .menu-links a, .menu-links a { font-size: 22px; padding: 12px 0; }
+  .menu-close { font-size: 26px; }
+  .heard { font-size: 22px; padding: 0 4px; }
+  .card h3 { font-size: 19px; }
+  .ed h2, .med .ed h2, .chakra-read .ed h2 { font-size: 22px; }
+  .med-head h1, .page-head h1, .guide-pick h1, .chakra-head h1 { font-size: 28px; }
+  .ed p, .how span, .uses li, .signs-list li, .uses.compact li { font-size: 14.5px; }
+  .vid strong, .chakra-read .vid strong { font-size: 16px; }
+  .vid .play { width: 32px; height: 32px; }
+  .back { font-size: 12px; padding: 7px 14px 7px 11px; margin-bottom: 14px; }
+  .nav { padding-top: max(12px, env(safe-area-inset-top, 0px)); padding-bottom: 12px; }
+}
+.card .meta { margin: auto 0 0; padding-top: 8px; }
+.along-tabs { gap: 8px; margin-bottom: 18px; }
+.along-tabs button { font-size: 13px; padding: 7px 16px; }

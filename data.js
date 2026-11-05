@@ -716,211 +716,219 @@ const PROMPTS = [
   "I feel stuck and uninspired",
 ];
 
-// Hand-picked YouTube videos for each meditation, chosen October 2026 by
-// popularity and fit. Each entry: [title, video id, channel, length, views].
-// spotify / apple: the same kind of guided session as audio, [title, track id, artist, length].
+// Hand-picked sessions for each meditation, re-chosen November 2026 from the
+// most-viewed / top-ranked results by trusted teachers.
+// videos: [title, YouTube id, channel, length, views]
+// spotify: [title, "track/<id>" or "episode/<id>", artist, length]
+// apple: [title, "song/<id>" (Apple Music) or "ep/<show id>/<episode id>" (Apple Podcasts), artist, length]
 const MEDIA = {
   "vipassana": {
     videos: [
-      ["10-Minute Mindfulness Meditation", "ZToicYcHIOU", "Calm", "10 min", "34M"],
-      ["20-Minute Mindfulness Meditation for Being Present", "-2zdUXve6fQ", "The Mindful Movement", "21 min", "9.6M"],
-      ["20-Minute Guided Meditation with Jon Kabat-Zinn", "1H2Cgc60UlU", "No Nonsense Meditation", "20 min", "1.5M"],
+      ["10-Minute Mindfulness Meditation", "ZToicYcHIOU", "Calm", "10 min", "34.7M"],
+      ["Mindfulness Meditation, Guided 10 Minutes", "6p_yaNFSYao", "The Honest Guys", "10 min", "15.6M"],
+      ["5-Minute Guided Meditation with Jon Kabat-Zinn", "7WnZisfYMsE", "MasterClass", "7 min", "1M"],
     ],
     spotify: [
-      ["Mindfulness of Breathing", "5hO8J3n1CnJ3rgZ6Ac7YS8", "Diana Winston · UCLA", "6 min"],
-      ["Brief Mindfulness of Breathing", "4Esex0laFVPY2WxYbrdRl0", "Dr. Miles Neale", "7 min"],
+      ["Guided Mindfulness Meditation", "track/7F8QCDxqTCkqMKkhyCr5BA", "The Honest Guys", "10 min"],
+      ["A Breathscape Practice", "episode/7tsJlwDT0I2Uvr1qEmRoPh", "Jon Kabat-Zinn · Mindful Meditations", "Podcast"],
     ],
     apple: [
-      ["Mindfulness of Breathing", "288584848", "Diana Winston · UCLA", "6 min"],
-      ["Sitting Meditation", "721906858", "Jon Kabat-Zinn", "40 min"],
+      ["Guided Mindfulness Meditation", "song/968734647", "The Honest Guys", "10 min"],
+      ["A Breathscape Practice", "ep/1068281273/1000784716798", "Jon Kabat-Zinn · 12 Minute Meditation", "21 min"],
     ],
   },
   "metta": {
     videos: [
       ["Guided Loving-Kindness Meditation", "sDi40FQcaIU", "Buddhism In English", "23 min", "2.3M"],
-      ["Loving-Kindness for Mindfulness & Compassion", "-d_AA9H4z9U", "Josh Wise · WiseMindBody", "14 min", "1.4M"],
-      ["10-Minute Loving-Kindness with Sharon Salzberg", "FyKKvCO_vSA", "Lion’s Roar", "15 min", "60K"],
+      ["Loving-Kindness Meditation", "sz7cpV7ERsM", "UNH Health & Wellness", "13 min", "2.3M"],
+      ["Guided Metta Meditation by Thich Nhat Hanh", "5luvQp--B8U", "Plum Village App", "18 min", "464K"],
     ],
     spotify: [
-      ["Loving Kindness Meditation", "30FxkAAyynrU8nsq7dLpqL", "Jayadevi", "10 min"],
-      ["Metta Sutta: Loving-Kindness Chanting", "2N7OO2ULZsaW7KNGztLPpu", "Bhante Sujatha", "8 min"],
+      ["Guided Meditation: Metta (Lovingkindness)", "episode/3CKjJJpe7oCtZ3tAh8rXsV", "Tara Brach", "12 min"],
+      ["Loving Kindness (Metta Meditation)", "track/7xytzWpaORXC38N5z3Cpvl", "The Honest Guys", "28 min"],
     ],
     apple: [
-      ["Loving Kindness Meditation", "1103764966", "Jayadevi", "10 min"],
-      ["Loving Kindness Meditation", "424689193", "Bhante Sujatha", "16 min"],
+      ["Guided Meditation: Metta (Lovingkindness)", "ep/265264862/1000387314438", "Tara Brach", "12 min"],
+      ["Loving Kindness (Metta Meditation)", "song/1571140183", "The Honest Guys", "28 min"],
     ],
   },
   "body-scan": {
     videos: [
       ["Body Scan Meditation with Jon Kabat-Zinn", "u4gZgnCy5ew", "People in Pain Network", "45 min", "4.6M"],
       ["Compassionate Body Scan", "OS_iqfGjL78", "Mount Sinai Health System", "21 min", "2M"],
-      ["The Body Scan for Beginners", "kH-OQn5Ui8g", "Sharp HealthCare", "8 min", "206K"],
+      ["Grounding Body Scan", "3X-_qx9Txto", "Yoga With Adriene", "14 min", "242K"],
     ],
     spotify: [
-      ["Body Scan Meditation", "0jbGruuAbkfFhY1uNWnGkP", "Diana Winston · UCLA", "10 min"],
+      ["Body Scan Meditation", "track/0jbGruuAbkfFhY1uNWnGkP", "Diana Winston · UCLA", "10 min"],
+      ["Guided Body Scan Meditation", "track/2ANryAfp8dzwYe7KDqQ8Re", "Mark Williams · Oxford Mindfulness", "40 min"],
     ],
     apple: [
-      ["Body Scan Meditation", "288584890", "Diana Winston · UCLA", "10 min"],
-      ["Bodyscan", "721906852", "Jon Kabat-Zinn", "45 min"],
+      ["Body Scan Meditation", "song/288584890", "Diana Winston · UCLA", "10 min"],
+      ["Guided Body Scan Meditation", "song/793751961", "Mark Williams · Oxford Mindfulness", "40 min"],
     ],
   },
   "mantra": {
     videos: [
-      ["5-Minute Mantra Meditation for Beginners", "vbVh43mTHF4", "Yoga with Kassandra", "8 min", "261K"],
-      ["So Hum Mantra Guided Meditation", "UCE2PxrSmSU", "Meditative Mind", "30 min", "933K"],
-      ["Guided Mantra Meditation", "pMCO7KLif7s", "Hands-On Meditation", "22 min", "338K"],
+      ["Om Mantra Meditation, 11 Minutes", "vH11undyI2o", "Meditative Mind", "12 min", "11.2M"],
+      ["Om Chanting 108 Times", "ijfLsKg8jFY", "Nova Spiritual India", "31 min", "138.7M"],
+      ["Gayatri Mantra, 108 Times", "GEVvyIrQZnA", "Meditative India", "76 min", "13.1M"],
     ],
     spotify: [
-      ["So Hum Meditation", "4Ss0HFU1FXD7isAOSmGzVW", "Jayadevi", "11 min"],
-      ["So Hum Meditation", "497QxvhJnuwxdTWtq23Q73", "Chandra Om", "19 min"],
+      ["So Hum Meditation", "track/497QxvhJnuwxdTWtq23Q73", "Chandra Om", "19 min"],
+      ["So Hum: Guided Mantra Meditation", "episode/48xE44V3Ch2fklOZOgjknc", "Meditation with Ashley Brown", "Podcast"],
     ],
     apple: [
-      ["So Hum Meditation", "1103764962", "Jayadevi", "11 min"],
-      ["So Hum Meditation", "1516911093", "Chandra Om", "19 min"],
+      ["So Hum Meditation", "song/1103764962", "Jayadevi", "11 min"],
+      ["So Hum Meditation", "song/1516911093", "Chandra Om", "19 min"],
     ],
   },
   "zazen": {
     videos: [
-      ["Beginner’s Introduction to Zazen", "dDJ_wbjBL6c", "Hazy Moon Zen Center", "5 min", "311K"],
-      ["25-Minute Zazen Meditation", "4JudZVYYJ40", "Christoph Magnussen", "34 min", "395K"],
-      ["How to Sit Zazen", "5oDxR8c5e7E", "The Zen Gateway", "7 min", "34K"],
+      ["Guided Meditation by Thich Nhat Hanh: Calm, Ease", "XHvtIcaD194", "Plum Village App", "20 min", "3.9M"],
+      ["15-Minute Guided Zen Meditation", "aTIV9djESbY", "Christoph Magnussen", "15 min", "955K"],
+      ["Zen Meditation Instruction", "5GSMRUl9UPo", "Yokoji Zen Mountain Center", "8 min", "805K"],
     ],
     spotify: [
-      ["Prelude to Sitting Meditation", "4Y274ermYaVpPlv00epZiq", "Thich Nhat Hanh", "8 min"],
+      ["Prelude to Sitting Meditation", "track/4Y274ermYaVpPlv00epZiq", "Thich Nhat Hanh", "8 min"],
     ],
     apple: [
-      ["Prelude to Sitting Meditation", "387669672", "Thich Nhat Hanh & Sister Chân Không", "8 min"],
+      ["Prelude to Sitting Meditation", "song/387669672", "Thich Nhat Hanh & Sister Chân Không", "8 min"],
     ],
   },
   "pranayama": {
     videos: [
-      ["4-7-8 Breathing with Dr. Andrew Weil", "YRPh_GaiL8s", "Andrew Weil, M.D.", "6 min", "4.9M"],
-      ["Box Breathing Exercise", "FJJazKtH_9I", "Take a Deep Breath", "6 min", "2.5M"],
-      ["Alternate-Nostril Breathing", "8VwufJrUhic", "Yoga With Adriene", "11 min", "1.5M"],
+      ["Guided Wim Hof Method Breathing", "tybOi4hjZFQ", "Wim Hof", "11 min", "118.9M"],
+      ["4-7-8 Calm Breathing Exercise", "LiUnFJ8P4gM", "Hands-On Meditation", "11 min", "4.9M"],
+      ["Box Breathing Exercise", "FJJazKtH_9I", "Take a Deep Breath", "6 min", "2.6M"],
     ],
     spotify: [
-      ["Box Breathing: A Guided Meditation", "7ztzK9M6c5FIM5OCBVesCu", "Paul Babin", "11 min"],
-      ["Nadi Shodhana (Alternate-Nostril Breath)", "2vgFk8EbL5UiNrjnd1y7xV", "Jeff Craft", "7 min"],
+      ["How to Breathe Correctly for Health, Mood & Performance", "episode/0mPoOepkOJZlnPMNvPC10h", "Huberman Lab", "Podcast"],
+      ["5-Minute Box Breathing Meditation", "track/1305fS6hkcjswV47h5iPIU", "Sonia Kreitzer", "5 min"],
     ],
     apple: [
-      ["Box Breathing: A Guided Meditation", "1719300161", "Paul Babin", "11 min"],
-      ["Nadi Shodhana (Alternate-Nostril Breath)", "427089671", "Jeff Craft", "7 min"],
+      ["How to Breathe Correctly for Health, Mood & Performance", "ep/1545953110/1000600532657", "Huberman Lab", "134 min"],
+      ["5-Minute Box Breathing Meditation", "song/1657927149", "Sonia Kreitzer", "5 min"],
     ],
   },
   "yoga-nidra": {
     videos: [
-      ["20-Minute Yoga Nidra", "7H0FKzeuVVs", "Lizzy Hill", "20 min", "16M"],
-      ["30-Minute Yoga Nidra for Deep Rest", "8mM5Oks8yZc", "Ally Boothroyd · Sarovara Yoga", "32 min", "7.7M"],
-      ["10-Minute Yoga Nidra", "_noquwycq78", "Ally Boothroyd · Sarovara Yoga", "11 min", "4.1M"],
+      ["Yoga Nidra, 20-Minute Guided Meditation", "7H0FKzeuVVs", "Lizzy Hill", "20 min", "16.4M"],
+      ["30-Minute Yoga Nidra for Deep Rest", "8mM5Oks8yZc", "Ally Boothroyd · Sarovara Yoga", "32 min", "8.1M"],
+      ["20-Minute Non-Sleep Deep Rest (NSDR)", "hEypv90GzDE", "Dr. Andrew Huberman · Huberman Lab Clips", "21 min", "3.3M"],
     ],
     spotify: [
-      ["Guided Yoga Nidra: Deep Sleep", "6WXHygQ3zRFw4VXmOneZKG", "Davina Ho & Alex Couture", "26 min"],
-      ["Yoga Nidra: Journey Through the Subtle Bodies", "346rHKPlWvJHxkN8bSVmU9", "Kamini Desai", "9 min"],
+      ["10-Minute Non-Sleep Deep Rest (NSDR)", "track/1ZUjVHrZWEg5a9j89QL5aE", "Dr. Andrew Huberman", "11 min"],
+      ["20-Minute Non-Sleep Deep Rest (NSDR)", "track/4jomG2TtGLGcbUxwjpS6q4", "Dr. Andrew Huberman", "21 min"],
+      ["Yoga Nidra Sleep", "track/3qQYP9GqYfMxM7udXBSRJy", "Jason Stephenson", "32 min"],
     ],
     apple: [
-      ["Guided Yoga Nidra: Deep Sleep", "1591363676", "Davina Ho & Alex Couture", "26 min"],
-      ["Yoga Nidra", "1082704738", "Kamini Desai", "22 min"],
+      ["10-Minute Non-Sleep Deep Rest (NSDR)", "song/1736669614", "Dr. Andrew Huberman", "11 min"],
+      ["20-Minute Non-Sleep Deep Rest (NSDR)", "song/1743224838", "Dr. Andrew Huberman", "21 min"],
+      ["Yoga Nidra Sleep", "song/1320522954", "Jason Stephenson", "32 min"],
     ],
   },
   "visualization": {
     videos: [
-      ["10-Minute Manifestation Visualisation", "NVPrxcR_RZI", "Manifest by Jess", "11 min", "13M"],
+      ["Guided Meditation: Blissful Deep Relaxation", "Jyy0ra2WcQQ", "The Honest Guys", "19 min", "26.4M"],
+      ["Guided Imagery for Anxiety & Stress", "6vO1wPAmiMQ", "Jason Stephenson", "30 min", "6.4M"],
       ["10-Minute Guided Imagery Meditation", "t1rRo6cgM_E", "City of Hope", "11 min", "2.5M"],
-      ["Guided Imagery: A Walk Through the Forest", "6am3OS-Ejzk", "Mindfully", "12 min", "128K"],
     ],
     spotify: [
-      ["Journey to an Enchanted Spring Forest", "0C29G0060EvZFJoWSUP0Hl", "Nymfy ASMR", "25 min"],
+      ["Heal: Guided Visualization", "track/2qkNG7GeoPTo8iV7kBONgJ", "Jason Stephenson", "60 min"],
+      ["Guided Visualization", "track/2BISJI2AS1wEwlIJQCm5Wz", "Mediteazy", "25 min"],
     ],
     apple: [
-      ["Visualization: Forest & Waterfall", "736388884", "LisaOnYoga", "14 min"],
-      ["Guided Imagery Meditation", "326825104", "Carmen V. Pepicelli, PhD", "23 min"],
+      ["Heal: Guided Visualization", "song/1535265786", "Jason Stephenson", "61 min"],
+      ["Guided Visualization", "song/1001714054", "Mediteazy", "25 min"],
     ],
   },
   "walking": {
     videos: [
-      ["Mindful Walking Meditation", "aCwEwz1xU2M", "Declutter The Mind", "20 min", "219K"],
-      ["10-Minute Guided Walking Meditation", "ShG6kISrHoU", "Melanie Whitney", "10 min", "104K"],
+      ["Walking Meditation: A Guide to Mindful Walking", "0nwqqOCtGEU", "Buddhism In English", "13 min", "418K"],
+      ["How to Do Walking Meditation", "zZnNO1myCMg", "Yongey Mingyur Rinpoche", "3 min", "275K"],
       ["Thich Nhat Hanh on Walking Meditation", "90Pzn6NK4VQ", "Plum Village App", "5 min", "81K"],
     ],
     spotify: [
-      ["Walking Meditation", "72lOz6GoNlvVd3TlrVevht", "Diana Winston · UCLA", "8 min"],
-      ["Walking Meditation (Voice Only)", "4e1JxgXQ1dDcZgeT6ZHgg0", "Tanie Miller Kabala, Ph.D.", "20 min"],
+      ["Walking Meditation", "track/72lOz6GoNlvVd3TlrVevht", "Diana Winston · UCLA", "8 min"],
+      ["Walking Meditation, 10-Minute Guided", "episode/64HtstcqZGdEeZoz6LESIj", "As You Are Meditation", "Podcast"],
     ],
     apple: [
-      ["Walking Meditation", "288584885", "Diana Winston · UCLA", "8 min"],
-      ["Walking Meditation (Voice Only)", "967007591", "Tanie Miller Kabala, Ph.D.", "20 min"],
+      ["Walking Meditation", "song/288584885", "Diana Winston · UCLA", "8 min"],
+      ["Walking Meditation, 10-Minute Guided", "ep/1542916246/1000514487711", "As You Are Meditation", "9 min"],
     ],
   },
   "trataka": {
     videos: [
       ["Trataka for Focus & Clear Vision", "ssCk4aQhtxg", "Satvic Yoga", "10 min", "1.4M"],
-      ["10-Minute Guided Candle Gazing", "yp58DGsNUWE", "Bharti Yoga", "9 min", "133K"],
-      ["5-Minute Candle Gazing Meditation", "4eHsIhb0vZQ", "Peace of Mind", "5 min", "93K"],
+      ["10-Minute Guided Candle Gazing", "yp58DGsNUWE", "Bharti Yoga", "9 min", "135K"],
+      ["1 Hour Meditation Candle (to gaze at)", "GfpLea9OurA", "The Honest Guys", "61 min", "14.1M"],
     ],
     spotify: [
-      ["Trataka (Candle Flame) Meditation", "6GndwGozaWdLmk1nkfQ4MN", "True Me", "15 min"],
+      ["Trataka (Candle Flame) Meditation", "track/6GndwGozaWdLmk1nkfQ4MN", "True Me", "15 min"],
+      ["Candle Meditation: Step-by-Step Audio Guide", "episode/5TrA3E0PyANtMyBgs1CqL9", "Learn Powerful Meditation Techniques", "Podcast"],
     ],
     apple: [
-      ["Trataka (Candle Flame) Meditation", "1725389104", "True Me", "15 min"],
-      ["Trataka: Meditation on the Candle Light", "1234935079", "Ananda Calma", "7 min"],
+      ["Trataka (Candle Flame) Meditation", "song/1725389104", "True Me", "15 min"],
+      ["Trataka: Meditation on the Candle Light", "song/1234935079", "Ananda Calma", "7 min"],
     ],
   },
   "nada": {
     videos: [
-      ["10-Minute Crystal Singing Bowl Meditation", "unCya_-8ECs", "Jess Yoga", "10 min", "4.5M"],
+      ["Purity Sound Bath", "pcoXfD3PtTY", "Healing Vibrations", "55 min", "4.8M"],
+      ["10-Minute Crystal Singing Bowl Meditation", "unCya_-8ECs", "Jess Yoga", "10 min", "4.6M"],
       ["Bee Breath (Bhramari)", "jHAa1B0XctU", "Yoga With Adriene", "11 min", "390K"],
-      ["Guided Om Healing Meditation", "ZMmhNJl3aak", "Jason Stephenson", "14 min", "285K"],
     ],
     spotify: [
-      ["Om Chanting Meditation", "5Aqk8elO9drTjyqWXG7mEo", "Meditative Mind", "60 min"],
-      ["Bee Breath (Bhramari)", "5Dv4ioeiP3aIus09tfFs0Y", "Guru Katarina", "9 min"],
+      ["Singing Bowl (Ascension)", "track/5aGcszkgFp1DOnxziXZrUw", "Jon Hopkins", "21 min"],
+      ["Humming Bee Breath (Bhramari)", "episode/3MbGHnyAAEY1uchnOzCPlm", "Somatic Healing Meditations", "Podcast"],
     ],
     apple: [
-      ["Om Chanting Meditation", "1036618021", "Meditative Mind", "60 min"],
-      ["Bee Breath (Bhramari)", "1301061494", "Guru Katarina", "9 min"],
+      ["Singing Bowl (Ascension)", "song/1509520974", "Jon Hopkins", "21 min"],
+      ["Bee Breath (Bhramari)", "song/1301061494", "Guru Katarina", "9 min"],
     ],
   },
   "tonglen": {
     videos: [
-      ["Pema Chödrön: Tonglen", "QwqlurCvXuM", "Omega Institute", "5 min", "325K"],
-      ["Tonglen Meditation with Pema Chödrön", "-x95ltQP8qQ", "Sounds True", "12 min", "228K"],
-      ["Guided Tonglen Practice with Pema Chödrön", "SAV1RCnuAaE", "Belfast Buddhist", "11 min", "154K"],
+      ["Pema Chödrön: Tonglen Meditation", "QwqlurCvXuM", "Omega Institute", "5 min", "327K"],
+      ["Changing Your Heart Towards Pain", "OB_dPW2RJ94", "Pema Chödrön · Sounds True", "19 min", "259K"],
+      ["Tonglen Meditation", "-x95ltQP8qQ", "Pema Chödrön · Sounds True", "12 min", "232K"],
     ],
     spotify: [
-      ["Tonglen Meditation", "1xm7EiNfX2BLeacHovhgJc", "Lisa West", "9 min"],
-      ["Tonglen Meditation", "3dpEwTl6yYikxiEc0QRDJL", "Nick Milo", "8 min"],
+      ["Awakening Compassion with Tonglen", "episode/2HJBCCqhnGXgTmozTFY72f", "Tara Brach", "Podcast"],
+      ["Compassion Practice: Tonglen", "episode/3amU8YCWeVY16CvyFKLE4b", "Tara Brach", "24 min"],
     ],
     apple: [
-      ["Tonglen Meditation", "1462162330", "Lisa West", "9 min"],
-      ["Tonglen Meditation", "1488978403", "Nick Milo", "8 min"],
+      ["Compassion Practice: Tonglen", "ep/265264862/1000553509406", "Tara Brach", "24 min"],
+      ["Tonglen: The Boundless Space of Compassion", "ep/265264862/1000487116978", "Tara Brach", "6 min"],
     ],
   },
   "chakra": {
     videos: [
-      ["7 Chakra Cleansing with Seed Mantras", "NmAHY_tg9Es", "Meditative Mind", "22 min", "22M"],
-      ["Beginner’s Guided Chakra Meditation for Sleep", "y8LIbeKQ60U", "Jason Stephenson", "29 min", "21M"],
-      ["15-Minute Chakra Balance Meditation", "I6jP5oLdKpY", "Great Meditation", "16 min", "2.7M"],
+      ["Chakra Alignment, Spoken Guided Meditation", "y8LIbeKQ60U", "Jason Stephenson", "29 min", "21.2M"],
+      ["Quick 7 Chakra Cleansing with Seed Mantras", "NmAHY_tg9Es", "Meditative Mind", "22 min", "22M"],
+      ["Chakra Cleansing & Balancing, Guided", "zVVuy1lU1vo", "Michael Sealey", "45 min", "4.6M"],
     ],
     spotify: [
-      ["Chakra Alignment Meditation", "79mT6uTyK7ZosLuBqc0Nqu", "Jason Stephenson", "29 min"],
-      ["Chakra Meditation: A Guided Journey", "6G2uz264NyHfRa30VNNrvp", "Crystal Voices", "15 min"],
+      ["Chakra Meditation: Balance the 7 Chakras", "track/3oA4GM3rZv9aQmLqqATYtK", "Jason Stephenson", "31 min"],
+      ["Full Chakra Alignment: Guided Meditation", "episode/0OoL0Jl0YsMEHgccotksS1", "A Zen Mind Guided Meditations", "Podcast"],
     ],
     apple: [
-      ["Chakra Meditation: Balance the 7 Chakras", "1742203600", "Jason Stephenson", "31 min"],
-      ["Chakra Meditation: A Guided Journey", "152344533", "Crystal Voices", "15 min"],
+      ["Chakra Meditation: Balance the 7 Chakras", "song/1742203600", "Jason Stephenson", "31 min"],
+      ["Chakra Meditation: A Guided Journey", "song/152344533", "Crystal Voices", "15 min"],
     ],
   },
   "qigong": {
     videos: [
-      ["Daily Qigong Routine", "Y88zYo0YlOo", "Qigong For Vitality", "10 min", "3.1M"],
-      ["Beginner Qigong: Feel Great in 10 Minutes", "onA4pogScVg", "QiYoga With LuChin", "13 min", "1.7M"],
-      ["7-Minute Beginner Qigong", "jMuHgj3FF_k", "Qigong For Vitality", "8 min", "1.1M"],
+      ["Qigong Full 20-Minute Daily Routine", "cwlvTcWR3Gs", "Eight Pieces", "20 min", "9.9M"],
+      ["Qigong for Beginners", "IyINAjEoTIs", "Yoqi Yoga and Qigong", "30 min", "5.1M"],
+      ["Daily Qigong Routine, Easy and Effective", "Y88zYo0YlOo", "Qigong For Vitality", "10 min", "3.2M"],
     ],
     spotify: [
-      ["Qigong Meditation Music", "2hq5elOY8iXiN5lpZSczL7", "Qi Gong Academy", "9 min"],
+      ["Full Body Qigong Routine, 18-Minute Follow-Along", "episode/3C8vLt32eswOI5x7AiUogU", "Rooted Alchemy Tai Chi and Qigong", "18 min"],
+      ["Qigong Meditation Music", "track/2hq5elOY8iXiN5lpZSczL7", "Qi Gong Academy", "9 min"],
     ],
     apple: [
-      ["Qigong Meditation Music", "1231346822", "Qi Gong Academy", "8 min"],
+      ["Qigong Meditation Music", "song/1231346822", "Qi Gong Academy", "8 min"],
     ],
   },
 };

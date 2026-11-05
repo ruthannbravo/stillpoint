@@ -181,9 +181,7 @@ function mountStage(opts) {
 }
 
 function readout(c, label) {
-  const n = CHAKRAS.length - CHAKRAS.indexOf(c);
   document.getElementById("readout").innerHTML = `
-    <span class="num">${String(n).padStart(2, "0")}<em>/07</em></span>
     <span class="lbl">${c.name.toLowerCase()} chakra</span>
     <span class="tag glass">${label}</span>`;
 }
@@ -191,10 +189,8 @@ function readout(c, label) {
 function medCard(m, reason) {
   return `
     <a class="card glass" href="#/meditations/${m.id}">
-      <span class="eyebrow">${esc(m.origin)}</span>
       <h3>${esc(m.name)}</h3>
       <p>${esc(m.summary)}</p>
-      ${reason ? `<p class="why">${esc(reason)}</p>` : ""}
       <p class="helps"><span>Helps with</span>${m.usedFor.slice(0, 3).map((u) => esc(u.toLowerCase())).join(" · ")}</p>
       <span class="meta">${esc(m.duration)}</span>
     </a>`;
@@ -294,10 +290,10 @@ function renderResults(scroll) {
     ${crisis}
     ${heard}
     <section class="for-you">
-      <h2 class="section-title">Meditations for you</h2>
+      <h2 class="section-title small">Meditations for you</h2>
       <div class="grid picks">${r.meditations.map((id) => medCard(meditationById[id], r.reasons[id]?.[0])).join("")}</div>
     </section>
-    <h2 class="section-title">Where it may be sitting in your body</h2>
+    <h2 class="section-title small">Where it may be sitting in your body</h2>
     <div class="results">
       ${stageHTML()}
       <div class="side">
@@ -395,8 +391,11 @@ const STEPS = ["Practice", "Practice along", "History"];
 const PLAY = `<span class="play"><svg viewBox="0 0 24 24" width="16" height="16"><path d="M8 5.5v13l10-6.5z" fill="currentColor"/></svg></span>`;
 const ALONG = [
   ["videos", "Video", "YouTube", (id) => `https://www.youtube.com/watch?v=${id}`],
-  ["spotify", "Spotify", "Spotify", (id) => `https://open.spotify.com/track/${id}`],
-  ["apple", "Apple Music", "Apple Music", (id) => `https://music.apple.com/us/song/${id}`],
+  ["spotify", "Spotify", "Spotify", (id) => `https://open.spotify.com/${id}`],
+  ["apple", "Apple", "Apple Music or Apple Podcasts", (id) => {
+    const [kind, a, b] = id.split("/");
+    return kind === "ep" ? `https://podcasts.apple.com/us/podcast/id${a}?i=${b}` : `https://music.apple.com/us/song/${a}`;
+  }],
 ];
 function alongHTML(media) {
   const tabs = ALONG.filter(([key]) => (media[key] || []).length);
@@ -409,12 +408,11 @@ function alongHTML(media) {
       <div class="along" role="tabpanel" id="along-panel-${key}" aria-labelledby="along-tab-${key}" data-along-panel="${key}" ${i ? "hidden" : ""}>
         <div class="vids">${media[key].map(([title, id, by, length, views], n) => `
           <a class="vid" href="${esc(url(id))}" target="_blank" rel="noopener noreferrer">
-            <em>${two(n + 1)}</em>
             <strong>${esc(title)}<small>${esc(by)} · ${esc(length)}${views ? ` · ${esc(views)} views` : ""}</small></strong>
             ${PLAY}
           </a>`).join("")}
         </div>
-        <p class="note">Opens in ${where}${key === "videos" ? "" : ". Full sessions need a subscription or free account"}.</p>
+        <p class="note">Opens in ${where}${key === "spotify" ? ". Some sessions need a free account" : ""}.</p>
       </div>`).join("")}`;
 }
 
@@ -439,7 +437,7 @@ function renderMeditation(id, section) {
   const slides = [
     `<div class="ed">
       <h2>What it's used for</h2>
-      <ol class="uses compact">${m.usedFor.map((u, i) => `<li><em>${two(i + 1)}</em>${esc(u)}</li>`).join("")}</ol>
+      <ol class="uses compact">${m.usedFor.map((u, i) => `<li>${esc(u)}</li>`).join("")}</ol>
       <h2 class="how-title">How to practice</h2>
       <dl class="meta">
         <div><dt>Time</dt><dd>${esc(m.duration)}</dd></div>
@@ -511,7 +509,7 @@ function stepperHTML(labels) {
       <div class="track"><i class="fill"></i></div>
       ${labels.map((label, i) => `
         <button class="node" data-step="${i}" aria-label="${label}">
-          <i></i><span><em>${two(i + 1)}</em>${label}</span>
+          <i></i><span>${label}</span>
         </button>`).join("")}
     </nav>
     <section class="slide" aria-live="polite"></section>
@@ -688,15 +686,15 @@ function renderChakras(id) {
     </div>`,
     `<div class="ed">
       <h2>Signs it may be blocked</h2>
-      <ol class="uses signs-list">${c.blocked.map((b, i) => `<li><em>${two(i + 1)}</em>${b}</li>`).join("")}</ol>
+      <ol class="uses signs-list">${c.blocked.map((b, i) => `<li>${b}</li>`).join("")}</ol>
     </div>`,
     `<div class="ed">
       <h2>When it's balanced</h2>
-      <ol class="uses signs-list open">${c.balanced.map((b, i) => `<li><em>${two(i + 1)}</em>${b}</li>`).join("")}</ol>
+      <ol class="uses signs-list open">${c.balanced.map((b) => `<li>${b}</li>`).join("")}</ol>
     </div>`,
     `<div class="ed">
       <h2>How to unblock it</h2>
-      <ol class="how">${c.practices.map((p, i) => `<li><em>${two(i + 1)}</em><span>${p}</span></li>`).join("")}</ol>
+      <ol class="how plain">${c.practices.map((p) => `<li><span>${p}</span></li>`).join("")}</ol>
     </div>`,
     `<div class="ed">
       <h2>Meditations</h2>
@@ -705,7 +703,6 @@ function renderChakras(id) {
           const m = meditationById[mid];
           return `
           <a class="vid" href="#/meditations/${m.id}">
-            <em>${two(i + 1)}</em>
             <strong>${esc(m.name)}<small>${esc(m.origin)} · ${esc(m.duration)}</small></strong>
             <span class="play">${icon("r", 18)}</span>
           </a>`;
@@ -769,7 +766,6 @@ function renderGuide(level) {
         <div class="levels">
           ${Object.entries(GUIDE).map(([key, g], i) => `
             <a class="level" href="#/guide/${key}" style="--i:${i}">
-              <em>${two(i + 1)}</em>
               <strong>${g.label}</strong>
               <span>${g.blurb}</span>
               <small>${g.daily}</small>
@@ -783,15 +779,14 @@ function renderGuide(level) {
   const labels = plan.weeks.map((w, i) => `Week ${i + 1}`);
   const slides = plan.weeks.map((w, i) => `
     <div class="ed">
-      <span class="eyebrow">Week ${i + 1} · ${esc(w.time)}</span>
       <h2>${esc(w.title)}</h2>
+      <p class="sub">${esc(w.time)}</p>
       <p class="lead">${esc(w.intro)}</p>
       <div class="vids">
         ${w.practices.map(([id, note], j) => {
           const m = meditationById[id];
           return `
           <a class="vid" href="#/meditations/${m.id}/practice">
-            <em>${two(j + 1)}</em>
             <strong>${esc(m.name)}<small>${esc(note)}</small></strong>
             <span class="play">${icon("r", 18)}</span>
           </a>`;
@@ -807,9 +802,8 @@ function renderGuide(level) {
     <article class="med guide fade">
       <a class="back" href="#/guide">${icon("l", 16)} Change level</a>
       <header class="med-head">
-        <span class="eyebrow">Your ${plan.label.toLowerCase()} plan · ${plan.daily}</span>
         <h1>${plan.label}</h1>
-        <p class="alt">${esc(plan.intro)}</p>
+        <p class="alt">${esc(plan.intro)} ${esc(plan.daily)}.</p>
       </header>
       ${stepperHTML(labels)}
     </article>`;
