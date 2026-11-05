@@ -1682,16 +1682,25 @@ h1 em, h2 em, h3 em { font-weight: 200; opacity: 0.8; }
   .heard { margin-bottom: 36px; }
 }
 
-/* ---------- A barely-there colour for each kind of practice ---------- */
-body[data-theme] .card[data-tag] { background: linear-gradient(160deg, rgb(var(--tint) / 0.16), rgb(var(--tint) / 0.05)), rgba(18, 38, 26, 0.18); }
-body[data-theme] .card[data-tag]:hover { background: linear-gradient(160deg, rgb(var(--tint) / 0.26), rgb(var(--tint) / 0.08)), rgba(18, 38, 26, 0.22); }
-[data-tag="calm"] { --tint: 150 190 220; }
-[data-tag="sleep"] { --tint: 176 160 220; }
-[data-tag="focus"] { --tint: 230 205 140; }
-[data-tag="heart"] { --tint: 232 160 172; }
-[data-tag="energy"] { --tint: 240 170 130; }
-[data-tag="grounding"] { --tint: 160 200 150; }
-.bubble[data-tag]:not([data-tag="all"]):not(.on) { background: rgb(var(--tint) / 0.14); border-color: rgb(var(--tint) / 0.45); }
 .page-head.center h1 { font-size: clamp(30px, 4.4vw, 60px); }
 @media (max-width: 760px) { .page-head.center h1 { font-size: 28px; } }
-body[data-theme] .card[data-tag] { background: linear-gradient(160deg, rgb(var(--tint) / 0.22), rgb(var(--tint) / 0.07)), rgba(18, 38, 26, 0.18); }
+
+/* ---------- Kinds of practice: a small coloured dot, uniform cards ---------- */
+[data-tag="calm"] { --tint: 150 190 230; }
+[data-tag="sleep"] { --tint: 180 162 232; }
+[data-tag="focus"] { --tint: 240 212 140; }
+[data-tag="heart"] { --tint: 240 160 176; }
+[data-tag="energy"] { --tint: 245 168 126; }
+[data-tag="grounding"] { --tint: 156 206 146; }
+.tag-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: rgb(var(--tint)); box-shadow: 0 0 8px rgb(var(--tint) / 0.8); flex-shrink: 0; }
+.card h3 { display: flex; align-items: center; gap: 10px; }
+.card .kinds { display: inline-flex; gap: 5px; margin-left: auto; }
+.bubble[data-tag] { display: inline-flex; align-items: center; gap: 7px; }
+/* cards: a deeper glass so text reads easily over the photo */
+body[data-theme] .card { background: rgba(14, 30, 22, 0.42); border-color: rgba(255, 255, 255, 0.2); }
+body[data-theme] .card:hover { background: rgba(14, 30, 22, 0.52); }
+body[data-scene="water"][data-theme] .card { background: rgba(10, 26, 38, 0.44); }
+body[data-scene="water"][data-theme] .card:hover { background: rgba(10, 26, 38, 0.54); }
+body[data-scene="sunrise"][data-theme] .card { background: rgba(34, 20, 32, 0.42); }
+body[data-scene="sunrise"][data-theme] .card:hover { background: rgba(34, 20, 32, 0.52); }
+.card p, .card .helps { color: rgba(255, 255, 255, 0.86); }
