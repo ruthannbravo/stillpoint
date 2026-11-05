@@ -1397,10 +1397,8 @@ main:has(.guide-pick) { max-width: none; }
 .hero.intro .prompts .bubble { animation-duration: 0.7s; }
 .nav { animation-duration: 0.8s; animation-delay: 0s; }
 .bg { animation-duration: 0.9s; }
-/* only download the background that's actually showing */
-.bg .photo.water, .bg .photo.sunrise { background-image: none; }
-body[data-scene="water"] .bg .photo.water { background-image: url("assets/bg-water.jpg"); }
-body[data-scene="sunrise"] .bg .photo.sunrise { background-image: url("assets/bg-sunrise.jpg"); }
+/* Keep each photo available while its opacity fades, including the outgoing
+   scene. Removing its image here would expose the page canvas mid-transition. */
 
 /* Phones: let the photo run behind the status bar and the browser's toolbar */
 .bg {
@@ -1414,27 +1412,17 @@ body[data-scene="sunrise"] .bg .photo.sunrise { background-image: url("assets/bg
 .menu-sheet { padding-top: max(88px, calc(env(safe-area-inset-top, 0px) + 72px)); padding-bottom: max(36px, calc(env(safe-area-inset-bottom, 0px) + 20px)); }
 .menu-close { top: max(16px, calc(env(safe-area-inset-top, 0px) + 8px)); }
 
-/* ---------- Phones: photo under the browser bars, and no shifting on scroll ---------- */
-/* The page canvas itself carries the photo, so whatever shows behind the
-   status bar, toolbar or an overscroll bounce is the picture, not a flat colour. */
+/* The fixed .bg owns the landscape. A second photo on html would switch
+   instantly beneath its fading layers, with a different crop on long pages. */
 html {
-  background:
-    linear-gradient(rgba(60, 92, 66, 0.45), rgba(30, 58, 38, 0.55)),
-    url("assets/bg-hills.jpg") center 60% / cover no-repeat,
-    #4a6650;
+  background: #4a6650;
   min-height: 100%;
 }
 html[data-scene="water"] {
-  background:
-    linear-gradient(rgba(60, 94, 118, 0.42), rgba(24, 52, 68, 0.6)),
-    url("assets/bg-water.jpg") center 55% / cover no-repeat,
-    #3f5d70;
+  background: #3f5d70;
 }
 html[data-scene="sunrise"] {
-  background:
-    linear-gradient(rgba(150, 102, 96, 0.3), rgba(48, 34, 52, 0.6)),
-    url("assets/bg-sunrise.jpg") center 40% / cover no-repeat,
-    #6c5262;
+  background: #6c5262;
 }
 body { background-color: transparent; }
 
@@ -1555,10 +1543,10 @@ h1 em, h2 em, h3 em { font-weight: 200; opacity: 0.8; }
   body[data-theme="library"] .bg .photo { filter: saturate(1.1) hue-rotate(-8deg) brightness(0.78) contrast(0.85); transition: none; }
   body[data-theme="chakra"] .bg .photo.hills,
   body[data-theme="library"] .bg .photo.hills { background-image: url("assets/bg-hills-soft.jpg"); }
-  body[data-theme="chakra"][data-scene="water"] .bg .photo.water,
-  body[data-theme="library"][data-scene="water"] .bg .photo.water { background-image: url("assets/bg-water-soft.jpg"); }
-  body[data-theme="chakra"][data-scene="sunrise"] .bg .photo.sunrise,
-  body[data-theme="library"][data-scene="sunrise"] .bg .photo.sunrise { background-image: url("assets/bg-sunrise-soft.jpg"); }
+  body[data-theme="chakra"] .bg .photo.water,
+  body[data-theme="library"] .bg .photo.water { background-image: url("assets/bg-water-soft.jpg"); }
+  body[data-theme="chakra"] .bg .photo.sunrise,
+  body[data-theme="library"] .bg .photo.sunrise { background-image: url("assets/bg-sunrise-soft.jpg"); }
 }
 .chakra-head h1 { margin-bottom: 22px; }
 
