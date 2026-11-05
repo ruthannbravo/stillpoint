@@ -89,7 +89,7 @@ One WebGL renderer is shared across the whole site, and its canvas simply moves 
 - **No framework, no build step.** Plain HTML, CSS and JavaScript ([`index.html`](index.html), [`styles.css`](styles.css), [`app.js`](app.js), [`data.js`](data.js)), with a tiny hash router for the pages.
 - **Content as data.** Every meditation, chakra, guide plan, keyword and video lives in [`data.js`](data.js), so the site can grow without touching layout code.
 - **Matching without AI.** The search scores your words against feeling keywords (anxiety, grief, anger…) and practice keywords (candle, breath, tai chi…). It runs entirely in the browser, and nothing you type is sent anywhere.
-- **Design system.** *Instrument Serif* for headlines, *DM Sans* for reading, frosted-glass panels, dotted organic "bubbles", and an edge-to-edge timeline component reused across meditations, chakras and the guide.
+- **Design system.** *Poppins* throughout in light weights, frosted-glass panels and pill buttons, and an edge-to-edge timeline component reused across meditations, chakras and the guide.
 - **Offline and secure.** All assets are local. The site sets a strict Content-Security-Policy and other security headers ([`vercel.json`](vercel.json)), and has no keys, accounts or tracking.
 - **Hosting.** Deployed on Vercel.
 
@@ -107,7 +107,7 @@ Then open http://localhost:5187.
 
 - **3D body:** MakeHuman base mesh, CC0. See [`assets/ATTRIBUTION.md`](assets/ATTRIBUTION.md).
 - **3D engine:** [three.js](https://threejs.org) r128, MIT.
-- **Fonts:** Instrument Serif and DM Sans, SIL Open Font License.
+- **Font:** Poppins, SIL Open Font License.
 - **Backgrounds:** photographs from [Unsplash](https://unsplash.com), Unsplash License.
 - **Historical images:** Wikimedia Commons (public domain, CC0, CC BY and CC BY-SA). Each image's author and licence are credited on the site and in [`data.js`](data.js).
 - **Guided videos:** links to the creators' own YouTube channels. No videos are hosted here.

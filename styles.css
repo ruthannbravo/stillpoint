@@ -1508,3 +1508,56 @@ body { background-color: transparent; }
 
 /* page titles get focus on navigation (for screen readers); no visible box around them */
 h1[tabindex="-1"]:focus { outline: none; }
+
+/* ---------- Typeface: Poppins everywhere, light and calm ---------- */
+:root {
+  --serif: "Poppins", system-ui, -apple-system, sans-serif;
+  --sans: "Poppins", system-ui, -apple-system, sans-serif;
+}
+body { font-weight: 300; }
+h1, h2, h3, .wordmark, .vid strong, .uses li, .level strong { font-weight: 300; letter-spacing: -0.025em; }
+/* Poppins is wider than the old serif: bring the big titles down a step */
+h1 { font-size: clamp(36px, 5.4vw, 84px); line-height: 1.05; }
+.ed h2 { font-size: clamp(30px, 3.6vw, 56px); line-height: 1.1; }
+.chakra-read .ed h2 { font-size: clamp(28px, 3vw, 48px); }
+.uses li { font-size: clamp(22px, 3vw, 44px); }
+.uses.compact li { font-size: clamp(18px, 1.9vw, 26px); }
+.vid strong { font-size: clamp(20px, 2.4vw, 34px); }
+.chakra-read .vid strong { font-size: clamp(18px, 1.5vw, 24px); }
+.level strong { font-size: clamp(28px, 3.2vw, 52px); }
+.signs-list li { font-size: clamp(20px, 2.2vw, 34px); }
+.ed p.lead, .chakra-read .ed p.lead { font-size: clamp(18px, 1.7vw, 24px); line-height: 1.6; font-weight: 300; }
+/* no italics: Poppins reads calmer upright */
+*, *::before, *::after { font-style: normal !important; }
+h1 em, h2 em, h3 em { font-weight: 200; opacity: 0.8; }
+.wordmark { font-size: 20px; letter-spacing: -0.01em; }
+
+/* a quiet line under a section title (the chakra's themes, a practice's origin) */
+.ed .sub { margin: 10px 0 28px; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--soft); }
+.ed h2.how-title { margin-top: clamp(56px, 7vw, 96px); }
+
+/* example prompts and filters: soft glass pills, like the back button */
+.bubble, .bubble:nth-child(3n + 2), .bubble:nth-child(3n), .bubble:hover {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.12);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  backdrop-filter: blur(14px) saturate(1.2);
+  padding: 10px 18px;
+}
+.bubble:hover { background: rgba(255, 255, 255, 0.26); border-color: rgba(255, 255, 255, 0.7); }
+.bubble.on { background: rgba(255, 255, 255, 0.92); border-color: #fff; color: #2f3a55; }
+
+/* Phones: iPhone Safari stops drawing a big blurred, pinned photo partway down
+   the screen (leaving flat green below). Use a pre-blurred copy instead of a live blur. */
+@media (max-width: 760px), (hover: none) {
+  body[data-theme="chakra"] .bg .photo,
+  body[data-theme="library"] .bg .photo { filter: saturate(1.1) hue-rotate(-8deg) brightness(0.78) contrast(0.85); transition: none; }
+  body[data-theme="chakra"] .bg .photo.hills,
+  body[data-theme="library"] .bg .photo.hills { background-image: url("assets/bg-hills-soft.jpg"); }
+  body[data-theme="chakra"][data-scene="water"] .bg .photo.water,
+  body[data-theme="library"][data-scene="water"] .bg .photo.water { background-image: url("assets/bg-water-soft.jpg"); }
+  body[data-theme="chakra"][data-scene="sunrise"] .bg .photo.sunrise,
+  body[data-theme="library"][data-scene="sunrise"] .bg .photo.sunrise { background-image: url("assets/bg-sunrise-soft.jpg"); }
+}
+.chakra-head h1 { margin-bottom: 22px; }

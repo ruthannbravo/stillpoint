@@ -438,11 +438,9 @@ function renderMeditation(id, section) {
 
   const slides = [
     `<div class="ed">
-      <span class="eyebrow">People turn to it for</span>
       <h2>What it's used for</h2>
       <ol class="uses compact">${m.usedFor.map((u, i) => `<li><em>${two(i + 1)}</em>${esc(u)}</li>`).join("")}</ol>
-      <span class="eyebrow how-eyebrow">A simple way to begin</span>
-      <h2>How to practice</h2>
+      <h2 class="how-title">How to practice</h2>
       <dl class="meta">
         <div><dt>Time</dt><dd>${esc(m.duration)}</dd></div>
         <div><dt>Chakras</dt><dd>${m.chakras.map((c) => `<a href="#/chakras/${c}" class="pill" style="--c:${chakraById[c].color}">${chakraById[c].name}</a>`).join("")}</dd></div>
@@ -450,13 +448,12 @@ function renderMeditation(id, section) {
       <ol class="how">${m.steps.map((s, i) => `<li><em>${two(i + 1)}</em><span>${esc(s)}</span></li>`).join("")}</ol>
     </div>`,
     `<div class="ed">
-      <span class="eyebrow">Watch or listen</span>
       <h2>Practice along</h2>
       ${alongHTML(media)}
     </div>`,
     `<div class="ed">
-      <span class="eyebrow">${esc(m.origin)} · ${esc(m.era)}</span>
       <h2>Where it comes from</h2>
+      <p class="sub">${esc(m.origin)} · ${esc(m.era)}</p>
       <div class="flow">
         ${archive}
         ${m.history.map((p, i) => `<p class="${i ? "" : "lead"}">${esc(p)}</p>`).join("")}
@@ -671,27 +668,23 @@ function renderChakras(id) {
 
   const slides = [
     `<div class="ed">
-      <span class="eyebrow">${esc(c.theme)}</span>
       <h2>What it is</h2>
+      <p class="sub">${esc(c.theme)}</p>
       <p class="lead">${c.about}</p>
     </div>`,
     `<div class="ed">
-      <span class="eyebrow">You may notice</span>
       <h2>Signs it may be blocked</h2>
       <ol class="uses signs-list">${c.blocked.map((b, i) => `<li><em>${two(i + 1)}</em>${b}</li>`).join("")}</ol>
     </div>`,
     `<div class="ed">
-      <span class="eyebrow">When energy flows</span>
       <h2>When it's balanced</h2>
       <ol class="uses signs-list open">${c.balanced.map((b, i) => `<li><em>${two(i + 1)}</em>${b}</li>`).join("")}</ol>
     </div>`,
     `<div class="ed">
-      <span class="eyebrow">Everyday practices</span>
       <h2>How to unblock it</h2>
       <ol class="how">${c.practices.map((p, i) => `<li><em>${two(i + 1)}</em><span>${p}</span></li>`).join("")}</ol>
     </div>`,
     `<div class="ed">
-      <span class="eyebrow">Practices that help</span>
       <h2>Meditations</h2>
       <div class="vids">
         ${c.meditations.map((mid, i) => {
@@ -715,9 +708,7 @@ function renderChakras(id) {
       </div>
       <article class="chakra-read fade">
         <header class="chakra-head">
-          <span class="eyebrow">${c.location}</span>
           <h1>${c.name}<em>${c.sanskrit}</em></h1>
-          <p class="alt">“${c.meaning}”</p>
           <dl class="meta">
             <div><dt>Element</dt><dd>${c.element}</dd></div>
             <div><dt>Seed sound</dt><dd>${c.mantra}</dd></div>
