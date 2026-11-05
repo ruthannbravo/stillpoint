@@ -817,6 +817,25 @@ function renderGuide(level) {
 
 // ---------- Home screen instructions ----------
 
+// Small drawn previews of each step: simplified browser bits, with the thing to tap circled
+const SHARE_ICON = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 15V3m0 0L8 7m4-4 4 4"/><path d="M7 10H5v11h14V10h-2"/></svg>`;
+const PLUS_ICON = `<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M12 8v8M8 12h8"/></svg>`;
+function mock(kind) {
+  const url = `<div class="m-url"><span>stillpoint.annbravo.com</span></div>`;
+  const icon = `<i class="m-app">Stillpoint</i>`;
+  const views = {
+    "ios-url": `${url}`,
+    "ios-share": `<div class="m-bar"><span>‹</span><span>›</span><b class="m-hit">${SHARE_ICON}</b><span>▢</span></div>`,
+    "ios-add": `<div class="m-list"><span>Copy</span><span>Add to Reading List</span><b class="m-hit">Add to Home Screen ${PLUS_ICON}</b></div>`,
+    "ios-name": `<div class="m-dialog"><span class="m-row">Cancel<em>Add to Home Screen</em><b class="m-hit">Add</b></span><span class="m-row">${icon}<em>Stillpoint</em></span></div>`,
+    "and-url": `${url}`,
+    "and-menu": `<div class="m-url"><span>stillpoint.annbravo.com</span><b class="m-hit">⋮</b></div>`,
+    "and-add": `<div class="m-list"><span>New tab</span><span>Bookmarks</span><b class="m-hit">Add to Home screen</b></div>`,
+    "and-name": `<div class="m-dialog"><span class="m-row">${icon}<em>Stillpoint</em></span><span class="m-row end">Cancel<b class="m-hit">Add</b></span></div>`,
+  };
+  return `<div class="mock" aria-hidden="true">${views[kind]}</div>`;
+}
+
 function renderHomeScreen() {
   setTheme("library");
   view.innerHTML = `
@@ -824,29 +843,27 @@ function renderHomeScreen() {
       <a class="back" href="#/">${icon("l", 16)} Back to Find</a>
       <header class="page-head">
         <h1>Add to your home screen</h1>
-        <p class="lede">Keep Stillpoint a tap away. Save it beside your apps, ready for a moment of calm.</p>
+        <p class="lede">Add Stillpoint like an app.</p>
       </header>
       <div class="home-screen-steps">
         <section aria-labelledby="home-screen-apple">
-          <span class="eyebrow">Safari</span>
-          <h2 id="home-screen-apple">iPhone &amp; iPad</h2>
+          <h2 id="home-screen-apple">iPhone &amp; iPad <small>Safari</small></h2>
           <ol>
-            <li>Open <a href="/">Stillpoint</a> in <strong>Safari</strong>.</li>
-            <li>Open the <strong>Share</strong> menu (the square with an arrow pointing up). You may need to tap the menu button first.</li>
-            <li>Scroll down and tap <strong>Add to Home Screen</strong>.</li>
-            <li>Keep the name Stillpoint. If you see <strong>Open as Web App</strong>, turn it on, then tap <strong>Add</strong>.</li>
+            <li>Open <a href="/">Stillpoint</a> in <strong>Safari</strong>.${mock("ios-url")}</li>
+            <li>Open the <strong>Share</strong> menu (the square with an arrow pointing up). You may need to tap the menu button first.${mock("ios-share")}</li>
+            <li>Scroll down and tap <strong>Add to Home Screen</strong>.${mock("ios-add")}</li>
+            <li>Keep the name Stillpoint. If you see <strong>Open as Web App</strong>, turn it on, then tap <strong>Add</strong>.${mock("ios-name")}</li>
           </ol>
           <p class="home-screen-note">Can’t find Add to Home Screen? Scroll to the bottom of the share menu, tap Edit Actions, and add it there.</p>
           <a class="link" href="https://support.apple.com/guide/iphone/bookmark-a-website-iph42ab2f3a7/ios" target="_blank" rel="noopener">Apple’s instructions ↗</a>
         </section>
         <section aria-labelledby="home-screen-android">
-          <span class="eyebrow">Chrome</span>
-          <h2 id="home-screen-android">Android</h2>
+          <h2 id="home-screen-android">Android <small>Chrome</small></h2>
           <ol>
-            <li>Open <a href="/">Stillpoint</a> in <strong>Chrome</strong>.</li>
-            <li>Tap the <strong>three-dot menu</strong> beside the address bar.</li>
-            <li>Choose <strong>Install and create shortcut</strong>, then <strong>Create shortcut</strong>. On some versions, choose <strong>Add to Home screen</strong>.</li>
-            <li>Keep the name Stillpoint, tap <strong>Add</strong>, and confirm if asked.</li>
+            <li>Open <a href="/">Stillpoint</a> in <strong>Chrome</strong>.${mock("and-url")}</li>
+            <li>Tap the <strong>three-dot menu</strong> beside the address bar.${mock("and-menu")}</li>
+            <li>Choose <strong>Install and create shortcut</strong>, then <strong>Create shortcut</strong>. On some versions, choose <strong>Add to Home screen</strong>.${mock("and-add")}</li>
+            <li>Keep the name Stillpoint, tap <strong>Add</strong>, and confirm if asked.${mock("and-name")}</li>
           </ol>
           <p class="home-screen-note">Your new shortcut opens Stillpoint in Chrome. Tap it on your home screen whenever you want to return.</p>
           <a class="link" href="https://support.google.com/chrome/answer/15085120?hl=en&amp;co=GENIE.Platform%3DAndroid" target="_blank" rel="noopener">Google’s instructions ↗</a>
